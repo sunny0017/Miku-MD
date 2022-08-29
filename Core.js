@@ -61,6 +61,9 @@ const {
 
 
 
+
+
+
 const _ = require('lodash')
 const yargs = require('yargs/yargs')
 var low
@@ -174,7 +177,6 @@ var body = (m.mtype === 'conversation') ? m.message.conversation : (m.mtype == '
 var budy = (typeof m.text == 'string' ? m.text : '')
 const prefix = global.prefa
 const isCmd = body.startsWith(prefix)
-const notCmd = body.startsWith('')
 const command = isCmd ? body.slice(1).trim().split(' ')[0].toLowerCase() : ''
 const args = body.trim().split(/ +/).slice(1)
 const pushname = m.pushName || "No Name"
@@ -235,17 +237,6 @@ const isImage = (m.type === 'imageMessage')
         const isQuotedTag = m.mtype === 'extendedTextMessage' && content.includes('mentionedJid')
         const isQuotedProd = m.mtype === 'extendedTextMessage' && content.includes('productMessage')
         const isQuotedReply = m.mtype === 'extendedTextMessage' && content.includes('Message')
-
-
-
-// DM chatbot
-
-if (!isCmd && !m.isGroup){
-    const botreply = await axios.get(`http://api.brainshop.ai/get?bid=168758&key=Ci7eNhtxpxxDB5FQ&uid=[uid]&msg=[${budy}]`)
-    txt = `${botreply.data.cnt}`
-    m.reply(txt)
-    }
-
 
 
 _sewa.expiredCheck(Miku, sewa)
@@ -513,11 +504,10 @@ if (command) {
 await Miku.sendPresenceUpdate('composing', m.chat)
 Miku.sendReadReceipt(from, m.sender, [m.key.id])}
 }
-/*
+
   if (global.autoReadGc) {
   if (m.isGroup) { Miku.sendReadReceipt(m.chat, m.sender, [m.key.id]) }
 }
-*/
 
   if (global.autoReadAll) { if (m.chat) { Miku.sendReadReceipt(m.chat, m.sender, [m.key.id]) }
   }
@@ -1209,7 +1199,7 @@ let cron = require('node-cron')
                                 "h": `Miku`,
                                 'duration': '99999', 
                                 'gifPlayback': 'true', 
-                                'caption': `Fantox`,
+                                'caption': `Zeeshan`,
                                 'jpegThumbnail': fs.readFileSync('./Assets/miku.mp4')
                                        }
                                       }
@@ -1354,7 +1344,7 @@ const ftroli = {
 
 
     const menulist = `
-    Konichiwa ${pushname} dear 👋. I am ${global.BotName}, a bot developed by: Fantox to take your WhatsApp usage into next level.
+    Konichiwa ${pushname} dear 👋. I am ${global.BotName}, a bot developed by: Zeeshan to take your WhatsApp usage into next level.
         
        「 System Info 」
     
@@ -1384,7 +1374,7 @@ const ftroli = {
     
     Type *-menu* or press any button below to start using *${global.BotName}*
     
-    ©️ *${global.BotName}* All Rights Reserved by: *Fantox*
+    ©️ *${global.BotName}* All Rights Reserved by: *Zeeshan*
     `
         const qtod = m.quoted? "true":"false"
         
@@ -1413,7 +1403,7 @@ switch(command) {
     buttons: buttons,
     headerType: 4,
     /*contextInfo:{externalAdReply:{
-    title:"Powered by Fantox",
+    title:"Powered by Zeeshan",
     body: " ", 
     thumbnail: fs.readFileSync("Assets/pic2.jpg"),
     mediaType:1,
@@ -1529,12 +1519,12 @@ break
 
 case 'support': case 'supportgc':
     
-    reply(`*My developer's group:* http://gg.gg/MikuSupport`)
+    reply(`*My developer's group:* https://www.youtube.com/watch?v=GTJ6VcHm0Jo`)
     break
 
 case 'repo': case 'botrepo':
     
-    reply(`*My Source Code:* https://github.com/FantoX001/Miku-MD`)
+    reply(`*My Source Code:* https://www.youtube.com/watch?v=GTJ6VcHm0Jo`)
     break
 
 case 'nsfwmenu':
@@ -1563,7 +1553,42 @@ case 'limituser': case 'userlimit': case 'limit':
               }
              break
     
-
+      case 'tts':
+        {
+          if (q === "help") {
+            await m.reply(
+              `*❗Command:* Text-To-Speech\n*🍀Aliases* -tts\n*🧩Category:* Downloader/Utils\n*🛠️Usage:* ${
+                prefix + command
+              } Text\n\n*📚Description:* Changes your text into Voice`
+            );
+            return;
+          }
+          let texttts = text
+            ? text
+            : m.quoted && m.quoted.text
+            ? m.quoted.text
+            : m.text;
+          const googleTTS = require("google-tts-api"); // CommonJS
+          const ttsurl = googleTTS.getAudioUrl(texttts, {
+            lang: "en",
+            slow: false,
+            host: "https://translate.google.com",
+          });
+          miku.sendMessage(
+            m.chat,
+            {
+              audio: {
+                url: ttsurl,
+              },
+              mimetype: "audio/mpeg",
+              fileName: `ttsMiku.m4a`,
+            },
+            {
+		    quoted: m,
+            }
+          );
+        }
+        break;
 
 
 case 'ringtone': {
@@ -1809,7 +1834,6 @@ await Miku.sendMessage(from, {text:"reply -s to this image to make sticker"}, {q
 }
 break
 
-/*
 case 'delete': case 'del': {
     if (isBan) return reply(mess.banned)	 			
  if (isBanChat) return reply(mess.bangc)
@@ -1819,27 +1843,6 @@ case 'delete': case 'del': {
  Miku.sendMessage(m.chat, { delete: { remoteJid: m.chat, fromMe: true, id: m.quoted.id, participant: m.quoted.sender } })
  }
  break
-*/
-
- case 'deleteall': case 'delall': case 'delete': case 'del': {
-    if (isBan) return reply(mess.banned)	 			
- if (isBanChat) return reply(mess.bangc)
- if (!isBotAdmins) return replay(mess.botadmin)
- if (!isAdmins && !isCreator) return replay(mess.useradmin)
- if (!m.quoted) return reply('Please mention a message baka!')
- let { chat, fromMe, id} = m.quoted
-
-const key = {
-    remoteJid: m.chat,
-    fromMe: false,
-    id: m.quoted.id,
-    participant: m.quoted.sender
-}
-
-await Miku.sendMessage(m.chat, { delete: key })
- }
- break
-
 
 
  case 'listpc': {
@@ -2500,111 +2503,6 @@ if (isBanChat) return reply(mess.bangc)
  }
  break
 
-/*
-     case 'purge':{
-        if (isBan) return reply(mess.banned)	 			
-     if (isBanChat) return reply(mess.bangc)
-     if (!m.isGroup) return replay(mess.grouponly)
-     if (!isBotAdmins) return replay(mess.botadmin)
-     if (!isAdmins && !isCreator) return replay(mess.useradmin)
-
-        const delay = time => new Promise(res=>setTimeout(res,time));
-
-        let users = (await Miku.fetchGroupMetadataFromWA(m.chat)).participants.map(u => u.jid)
-        for (let user of users){
-
-            await Miku.groupParticipantsUpdate(m.chat, [user], 'remove')
-            await delay(3000)
-        }
-    }
-     break
-
-*/
-
-case 'purge':{mess
-    if (isBan) return reply(mess.banned)	 			
-     if (isBanChat) return reply(mess.bangc)
-     if (!m.isGroup) return replay(mess.grouponly)
-     if (!isBotAdmins) return replay(mess.botadmin)
-     if (!isAdmins && !isCreator) return replay(mess.useradmin)
-const delay = time => new Promise(res=>setTimeout(res,time));
-let mentioned = participants.map(v => v.jid)
-      for (let member of mentioned) {     
-      Miku.groupParticipantsUpdate(m.chat, [member], 'remove')
-      }
-    }
-
-    break
-
-
-
-
-    case 'nowa':  case 'stalk': case 'stalknumber':{
-        if (isBan) return reply(mess.banned)
-        if (!args[0]) return reply(`Use command like: ${prefix}stalk <number>xxx`)
-        var inputnumber = args[0]
-        if (!inputnumber.includes('x')) return reply('You didnot added x')
-        reply(`Searching for WhatsApp account in given range...`)
-        reply(`Please wait while i fetch details...`)
-        function countInstances(string, word) {
-        return string.split(word).length - 1;
-        }
-        var number0 = inputnumber.split('x')[0]
-        var number1 = inputnumber.split('x')[countInstances(inputnumber, 'x')] ? inputnumber.split('x')[countInstances(inputnumber, 'x')] : ''
-        var random_length = countInstances(inputnumber, 'x')
-        var randomxx;
-        if (random_length == 1) {
-            randomxx = 10
-        } else if (random_length == 2) {
-            randomxx = 100
-        } else if (random_length == 3) {
-            randomxx = 1000
-        }
-        var nomerny = `*『 List of Whatsapp Numbers 』*\n\n`
-        var nobio = `\n*Bio:* || \nHey there! I am using WhatsApp.\n`
-        var nowhatsapp = `\n*Numbers with no WhatsApp account within the range you provided*\n`
-        for (let i = 0; i < randomxx; i++) {
-        var nu = ['1', '2', '3', '4', '5', '6', '7', '8', '9']
-        var status1 = nu[Math.floor(Math.random() * nu.length)]
-        var status2 = nu[Math.floor(Math.random() * nu.length)]
-        var status3 = nu[Math.floor(Math.random() * nu.length)]
-        var dom4 = nu[Math.floor(Math.random() * nu.length)]
-        var rndm;
-        if (random_length == 1) {
-        rndm = `${status1}`
-        } else if (random_length == 2) {
-        rndm = `${status1}${status2}`
-        } else if (random_length == 3) {
-        rndm = `${status1}${status2}${status3}`
-        } else if (random_length == 4) {
-        rndm = `${status1}${status2}${status3}${dom4}`
-        }
-        var anu = await Miku.onWhatsApp(`${number0}${i}${number1}@s.whatsapp.net`);
-        var anuu = anu.length !== 0 ? anu : false
-        try {
-        try {
-        var anu1 = await Miku.fetchStatus(anu[0].jid)
-        } catch {
-        var anu1 = '401'
-        }
-        if (anu1 == '401' || anu1.status.length == 0) {
-        nobio += `wa.me/${anu[0].jid.split("@")[0]}\n`
-        } else {
-        nomerny += `🎀 *Number:* wa.me/${anu[0].jid.split("@")[0]}\n🔹 *Bio :* ${anu1.status}\n🔸 *Updated On :* ${moment(anu1.setAt).tz('Asia/Kolkata').format('HH:mm:ss DD/MM/YYYY')}\n\n`
-        }
-        } catch {
-        nowhatsapp += `${number0}${i}${number1}\n`
-        }
-        }
-        reply(`${nomerny}${nobio}${nowhatsapp}`)
-        }
-        break
-
-
-
-
-
-
 
  case 'grouplink': case 'gclink': {
     if (isBan) return reply(mess.banned)	 			
@@ -2698,6 +2596,15 @@ let mentioned = participants.map(v => v.jid)
      }
      break
 
+     case 'add':{        
+        if (!m.isGroup) return replay(mess.grouponly)
+     if (!isBotAdmins) return replay(mess.botadmin)
+     let users = m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
+     if (users.length == 0) return replay(`please write the number of the person you want to add`)
+      await Miku.groupParticipantsUpdate(m.chat, [users], 'add').then((res) => replay(`✅Successfully Added!`)).catch((err) => replay(`Cannot add user to group`))
+     }
+     break
+		
      case 'remove':{
         if (isBan) return reply(mess.banned)	 			
      if (isBanChat) return reply(mess.bangc)
@@ -2705,7 +2612,7 @@ let mentioned = participants.map(v => v.jid)
      if (!isBotAdmins) return replay(mess.botadmin)
      if (!isAdmins && !isCreator) return replay(mess.useradmin)
      let users = m.mentionedJid[0] ? m.mentionedJid[0] : m.quoted ? m.quoted.sender : text.replace(/[^0-9]/g, '')+'@s.whatsapp.net'
-     await Miku.groupParticipantsUpdate(m.chat, [users], 'remove')
+     await Miku.groupParticipantsUpdate(m.chat, [users], 'remove').then((res) => replay(`✅HATA DIYA LAVDE KO MENE, BOT SINGH KHETE MADARCHODD :D !!!`))
      }
      break
 
@@ -2981,6 +2888,558 @@ case 'translate': case 'trans': {
     }
     break
 
+case 'textmaker': {
+   if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+if (args.length < 1) return reply(`Example :\n${prefix + command} <name>`)
+if (args[0] === 'glitch') {
+if (args.length < 2) return reply(`Example :\n${prefix + command + ' ' + args[0]} ${global.ownername}`)
+let teds = await thiccysapi.textpro("https://textpro.me/create-impressive-glitch-text-effects-online-1027.html", [args[1]])
+ Miku.sendMessage(from, {image:{url:teds}, caption:"Done!"}, {quoted:m})
+} else if (args[0] === 'glow') {
+if (args.length < 2) return reply(`Example :\n${prefix + command + ' ' + args[0]} ${global.ownername}`)
+let teds = await thiccysapi.textpro("https://textpro.me/create-light-glow-sliced-text-effect-online-1068.html", [args[1]])
+ Miku.sendMessage(from, {image:{url:teds}, caption:"Done!"}, {quoted:m})
+} else {
+reply(`*Text Maker List :*\n•> glitch\n•> glow`)
+}
+}
+break
+//logo maker
+case 'hoorror':{
+if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/horror-blood-text-effect-online-883.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+  case 'whitebear':{
+  	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/online-black-and-white-bear-mascot-logo-creation-1012.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'thunder2':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-thunder-text-effect-online-881.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'blackpink':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-blackpink-logo-style-online-1001.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'neon':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/neon-light-text-effect-online-882.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'matrix2':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/matrix-style-text-effect-online-884.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'sky':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-a-cloud-text-effect-on-the-sky-online-1004.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+
+case 'magma':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-a-magma-hot-text-effect-online-1030.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'sand':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/sand-writing-text-effect-online-990.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'pencil':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-a-sketch-text-effect-online-1044.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'graffiti':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-wonderful-graffiti-art-text-effect-1011.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'metallic':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-a-metallic-text-effect-free-online-1041.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'steel':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/steel-text-effect-online-921.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'harrypotter':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-harry-potter-text-effect-online-1025.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'underwater':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/3d-underwater-text-effect-generator-online-1013.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'luxury':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/3d-luxury-gold-text-effect-online-1003.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'glue2':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-3d-glue-text-effect-with-realistic-style-986.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'fabric':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/fabric-text-effect-online-964.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'neonlight':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/neon-light-glitch-text-generator-online-1063.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'lava':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/lava-text-effect-online-914.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'toxic':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/toxic-text-effect-online-901.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'ancient':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/3d-golden-ancient-text-effect-online-free-1060.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'christmas2':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/sparkles-merry-christmas-text-effect-1054.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'sci_fi':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/create-3d-sci-fi-text-effect-online-1050.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'rainbow':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+     let link = `https://textpro.me/3d-rainbow-color-calligraphy-text-effect-1049.html`
+     let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'classic':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/video-game-classic-8-bit-text-effect-1037.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'watercolor2':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/create-a-free-online-watercolor-text-effect-1017.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'halloween2':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/create-a-spooky-halloween-text-effect-online-1046.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'halloweenfire':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/halloween-fire-text-effect-940.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'writing':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/sand-writing-text-effect-online-990.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'foggy':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/write-text-on-foggy-window-online-free-1015.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'marvel':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/create-logo-style-marvel-studios-ver-metal-972.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'skeleton2':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/create-halloween-skeleton-text-effect-online-1047.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'sketch':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/create-a-sketch-text-effect-online-1044.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'wonderful':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/create-wonderful-graffiti-art-text-effect-1011.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'cool':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/create-a-cool-graffiti-text-on-the-wall-1010.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'collwall':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/create-cool-wall-graffiti-text-effect-online-1009.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'multicolor2':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/online-multicolor-3d-paper-cut-text-effect-1016.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'batman':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/make-a-batman-logo-online-free-1066.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'juice':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+let link = `https://textpro.me/fruit-juice-text-effect-861.html`
+let anui = await textpro(link, q)
+     reply(`Wait a moment while making the logo about 1 minute`) 
+     console.log(anui)
+     Miku.sendMessage(from, {image:{url:anui}, caption:"Here you go!"}, {quoted:m})
+}
+   break
+case 'pornhub':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+if(!q) return reply(`Example: ${prefix + command} ajg | ea`)
+reply(mess.wait)
+  inilogo4 = args.join(" ")
+inilogo9 = args.join(" ")
+   var logo4 = inilogo4.split('|')[0]
+var logo9 = inilogo9.split('|')[1]
+    let anu = await textpro("https://textpro.me/pornhub-style-logo-online-generator-free-977.html", [`${logo4}`,`${logo9}`])
+console.log(anu)
+ Miku.sendMessage(from,{image:{url:anu}, caption:"Here you go!"},{quoted:m})
+}
+break
+case 'retro':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+if(!q) return reply(`Example: ${prefix + command} ajg | ea`)
+reply(mess.wait)
+  inilogo4 = args.join(" ")
+inilogo9 = args.join(" ")
+   var logo4 = inilogo4.split('|')[0]
+var logo9 = inilogo9.split('|')[1]
+    let anu = await textpro("https://textpro.me/create-3d-retro-text-effect-online-free-1065.html", [`${logo4}`,`${logo9}`])
+console.log(anu)
+ Miku.sendMessage(from,{image:{url:anu}, caption:"Here you go!"},{quoted:m})
+}
+break
+case 'horror':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+if(!q) return reply(`Example: ${prefix + command} ajg | ea`)
+reply(mess.wait)
+  inilogo4 = args.join(" ")
+inilogo9 = args.join(" ")
+   var logo4 = inilogo4.split('|')[0]
+var logo9 = inilogo9.split('|')[1]
+    let anu = await textpro("https://textpro.me/create-a-cinematic-horror-text-effect-1045.html", [`${logo4}`,`${logo9}`])
+console.log(anu)
+ Miku.sendMessage(from,{image:{url:anu}, caption:"Here you go!"},{quoted:m})
+}
+break
+case '8bit':{
+	if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+if(!q) return reply(`Example: ${prefix + command} ajg | ea`)
+reply(mess.wait)
+  inilogo4 = args.join(" ")
+inilogo9 = args.join(" ")
+   var logo4 = inilogo4.split('|')[0]
+var logo9 = inilogo9.split('|')[1]
+    let anu = await textpro("https://textpro.me/video-game-classic-8-bit-text-effect-1037.html", [`${logo4}`,`${logo9}`])
+console.log(anu)
+ Miku.sendMessage(from,{image:{url:anu}, caption:"Here you go!"},{quoted:m})
+}
+break
+
+case 'candy': case 'christmas': case '3dchristmas': case 'sparklechristmas':
+case 'deepsea': case 'scifi': case 'rainbow': case 'waterpipe': case 'spooky': 
+case 'pencil': case 'circuit': case 'discovery': case 'metalic': case 'fiction': case 'demon': 
+case 'transformer': case 'berry': case 'thunder': case 'magma': case '3dstone': 
+case 'neonlight': case 'glitch': case 'harrypotter': case 'brokenglass': case 'papercut': 
+case 'watercolor': case 'multicolor': case 'neondevil': case 'underwater': case 'graffitibike':
+ case 'snow': case 'cloud': case 'honey': case 'ice': case 'fruitjuice': case 'biscuit': case 'wood': 
+case 'chocolate': case 'strawberry': case 'matrix': case 'blood': case 'dropwater': case 'toxic': 
+case 'lava': case 'rock': case 'bloodglas': case 'hallowen': case 'darkgold': case 'joker': case 'wicker':
+ case 'firework': case 'skeleton': case 'blackpink': case 'sand': case 'glue': case '1917': case 'leaves': {
+ 	   if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+              if (!q) return reply(`Example : ${prefix + command} ${global.ownername}`) 
+          
+             let link
+             if (/candy/.test(command)) link = 'https://textpro.me/create-christmas-candy-cane-text-effect-1056.html'
+             if (/christmas/.test(command)) link = 'https://textpro.me/christmas-tree-text-effect-online-free-1057.html'
+             if (/3dchristmas/.test(command)) link = 'https://textpro.me/3d-christmas-text-effect-by-name-1055.html'
+             if (/sparklechristmas/.test(command)) link = 'https://textpro.me/sparkles-merry-christmas-text-effect-1054.html'
+             if (/deepsea/.test(command)) link = 'https://textpro.me/create-3d-deep-sea-metal-text-effect-online-1053.html'
+             if (/scifi/.test(command)) link = 'https://textpro.me/create-3d-sci-fi-text-effect-online-1050.html'
+             if (/rainbow/.test(command)) link = 'https://textpro.me/3d-rainbow-color-calligraphy-text-effect-1049.html'
+             if (/waterpipe/.test(command)) link = 'https://textpro.me/create-3d-water-pipe-text-effects-online-1048.html'
+             if (/spooky/.test(command)) link = 'https://textpro.me/create-halloween-skeleton-text-effect-online-1047.html'
+             if (/pencil/.test(command)) link = 'https://textpro.me/create-a-sketch-text-effect-online-1044.html'
+             if (/circuit/.test(command)) link = 'https://textpro.me/create-blue-circuit-style-text-effect-online-1043.html'
+             if (/discovery/.test(command)) link = 'https://textpro.me/create-space-text-effects-online-free-1042.html'
+             if (/metalic/.test(command)) link = 'https://textpro.me/creat-glossy-metalic-text-effect-free-online-1040.html'
+             if (/fiction/.test(command)) link = 'https://textpro.me/create-science-fiction-text-effect-online-free-1038.html'
+             if (/demon/.test(command)) link = 'https://textpro.me/create-green-horror-style-text-effect-online-1036.html'
+             if (/transformer/.test(command)) link = 'https://textpro.me/create-a-transformer-text-effect-online-1035.html'
+             if (/berry/.test(command)) link = 'https://textpro.me/create-berry-text-effect-online-free-1033.html'
+             if (/thunder/.test(command)) link = 'https://textpro.me/online-thunder-text-effect-generator-1031.html'
+             if (/magma/.test(command)) link = 'https://textpro.me/create-a-magma-hot-text-effect-online-1030.html'
+             if (/3dstone/.test(command)) link = 'https://textpro.me/3d-stone-cracked-cool-text-effect-1029.html'
+             if (/neonlight/.test(command)) link = 'https://textpro.me/create-3d-neon-light-text-effect-online-1028.html'
+             if (/glitch/.test(command)) link = 'https://textpro.me/create-impressive-glitch-text-effects-online-1027.html'
+             if (/harrypotter/.test(command)) link = 'https://textpro.me/create-harry-potter-text-effect-online-1025.html'
+             if (/brokenglass/.test(command)) link = 'https://textpro.me/broken-glass-text-effect-free-online-1023.html'
+             if (/papercut/.test(command)) link = 'https://textpro.me/create-art-paper-cut-text-effect-online-1022.html'
+             if (/watercolor/.test(command)) link = 'https://textpro.me/create-a-free-online-watercolor-text-effect-1017.html'
+             if (/multicolor/.test(command)) link = 'https://textpro.me/online-multicolor-3d-paper-cut-text-effect-1016.html'
+             if (/neondevil/.test(command)) link = 'https://textpro.me/create-neon-devil-wings-text-effect-online-free-1014.html'
+             if (/underwater/.test(command)) link = 'https://textpro.me/3d-underwater-text-effect-generator-online-1013.html'
+             if (/graffitibike/.test(command)) link = 'https://textpro.me/create-wonderful-graffiti-art-text-effect-1011.html'
+             if (/snow/.test(command)) link = 'https://textpro.me/create-snow-text-effects-for-winter-holidays-1005.html'
+             if (/cloud/.test(command)) link = 'https://textpro.me/create-a-cloud-text-effect-on-the-sky-online-1004.html'
+             if (/honey/.test(command)) link = 'https://textpro.me/honey-text-effect-868.html'
+             if (/ice/.test(command)) link = 'https://textpro.me/ice-cold-text-effect-862.html'
+             if (/fruitjuice/.test(command)) link = 'https://textpro.me/fruit-juice-text-effect-861.html'
+             if (/biscuit/.test(command)) link = 'https://textpro.me/biscuit-text-effect-858.html'
+             if (/wood/.test(command)) link = 'https://textpro.me/wood-text-effect-856.html'
+             if (/chocolate/.test(command)) link = 'https://textpro.me/chocolate-cake-text-effect-890.html'
+             if (/strawberry/.test(command)) link = 'https://textpro.me/strawberry-text-effect-online-889.html'
+             if (/matrix/.test(command)) link = 'https://textpro.me/matrix-style-text-effect-online-884.html'
+             if (/blood/.test(command)) link = 'https://textpro.me/horror-blood-text-effect-online-883.html'
+             if (/dropwater/.test(command)) link = 'https://textpro.me/dropwater-text-effect-872.html'
+             if (/toxic/.test(command)) link = 'https://textpro.me/toxic-text-effect-online-901.html'
+             if (/lava/.test(command)) link = 'https://textpro.me/lava-text-effect-online-914.html'
+             if (/rock/.test(command)) link = 'https://textpro.me/rock-text-effect-online-915.html'
+             if (/bloodglas/.test(command)) link = 'https://textpro.me/blood-text-on-the-frosted-glass-941.html'
+             if (/hallowen/.test(command)) link = 'https://textpro.me/halloween-fire-text-effect-940.html'
+             if (/darkgold/.test(command)) link = 'https://textpro.me/metal-dark-gold-text-effect-online-939.html'
+             if (/joker/.test(command)) link = 'https://textpro.me/create-logo-joker-online-934.html'
+             if (/wicker/.test(command)) link = 'https://textpro.me/wicker-text-effect-online-932.html'
+             if (/firework/.test(command)) link = 'https://textpro.me/firework-sparkle-text-effect-930.html'
+             if (/skeleton/.test(command)) link = 'https://textpro.me/skeleton-text-effect-online-929.html'
+             if (/blackpink/.test(command)) link = 'https://textpro.me/create-blackpink-logo-style-online-1001.html'
+             if (/sand/.test(command)) link = 'https://textpro.me/write-in-sand-summer-beach-free-online-991.html'
+             if (/glue/.test(command)) link = 'https://textpro.me/create-3d-glue-text-effect-with-realistic-style-986.html'
+             if (/1917/.test(command)) link = 'https://textpro.me/1917-style-text-effect-online-980.html'
+                if (/leaves/.test(command)) link = 'https://textpro.me/natural-leaves-text-effect-931.html'
+             let anu = await maker.textpro(link, q)
+                Miku.sendMessage(m.chat, { image: { url: anu }, caption: `Made by ${global.botname},For my Darling ` }, { quoted: m })
+             }
+             break
 
 case 'gimage': case 'gig': case 'googleimage':{
    if (isBan) return reply(mess.banned)	 			
@@ -3372,7 +3831,6 @@ case 'play2': case 'ytplay2': {
                     let buttonMessage = {
                         image: { url: anu.thumbnail},
                         caption: `「 _Miku Youtube Player_ 」
-
     Title : ${anu.title}
     ID : ${anu.videoId}
     Duration : ${anu.timestamp}
@@ -3516,6 +3974,509 @@ case 'music': case 'play': case 'song': case 'ytplay': {
                  })
              }
              break
+case 'sam': {
+
+            	timestampe = speed();
+                
+let log0 = fs.readFileSync('./Assets/pic1.jpg')
+latensie = speed() - timestampe
+
+                anu = ``
+Miku.sendMessage(from, { react: { text: "✨", key: m.key }})
+		    let message = await prepareWAMessageMedia({ image: fs.readFileSync('./Assets/pic1.jpg'), jpegThumbnail:log0 }, { upload: Miku.waUploadToServer })
+     const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+
+     templateMessage: {
+
+         hydratedTemplate: {
+
+           imageMessage: message.imageMessage,
+
+           hydratedContentText: text.trim(),
+
+           hydratedFooterText: ` 
+   Konichiwa *${pushname}* Senpai,
+I am *Miku Nakano*, a bot developed by *Zeeshan*.
+Here is the guide of making your own Bot on your own number :)
+Kindly subscribe
+https://www.youtube.com/watch?v=GTJ6VcHm0Jo
+https://www.youtube.com/watch?v=GTJ6VcHm0Jo
+🔰 My prefix is:  ${prefix}
+Here's the list of my Commands.
+
+
+╔════⧫🧧𝑪𝒐𝒓𝒆🧧
+║
+║ -profile
+║ -help
+║ -delete
+║ -listgc
+║ -listpc
+║ -support
+║ -repo
+║ -script
+║
+╚════════════╝
+╔════⧫🎀𝑶𝒘𝒏𝒆𝒓🎀
+║
+║ -self
+║ -public
+║ -ban
+║ -bangroup
+║ -bye
+║ -join
+║ -block
+║ -unblock
+║ -broadcast
+║
+╚════════════╝
+╔════⧫👥𝑮𝒓𝒐𝒖𝒑👥
+║
+║ -promote
+║ -demote
+║ -revoke
+║ -add
+║ -remove
+║ -tagall
+║ -hidetag
+║ -groupsetting
+║ -grouplink
+║ -setgcpp
+║ -setname
+║ -setdesc
+║ -group
+║ -nsfw
+║ -welcome
+║
+╚════════════╝
+╔════⧫⛓️𝑨𝒏𝒕𝒊 𝑳𝒊𝒏𝒌⛓️
+║
+║ -antilinkgc
+║ -antilinktg
+║ -antilinktt
+║ -antilinkytch
+║ -antilinkytvid
+║ -antilinkig
+║ -antilinkfb
+║ -antilinktwit
+║ -antilinkall
+║ -antiwame
+║
+╚════════════╝
+╔════⧫🔎𝑺𝒆𝒂𝒓𝒄𝒉🔍
+║
+║ -play
+║ -song
+║ -yts
+║ -lyrics
+║ -google
+║ -playstore
+║ -gimage
+║ -pinterest
+║ -image
+║ -movie
+║ -wallpaper
+║ -searchgc
+║ -happymod
+║ -wikimedia
+║ -ringtone
+║ -anime
+║ -animestory
+║ -manga
+║
+╚════════════╝
+╔════⧫⚙️𝑪𝒐𝒏𝒗𝒆𝒓𝒕⚙️
+║
+║ -sticker
+║ -toimg
+║ -tovideo
+║ -togif
+║ -steal
+║ -stickermeme
+║ -emojimix
+║ -tourl
+║ -tomp3
+║ -toaudio
+║
+╚════════════╝
+╔════⧫🔉𝑨𝒖𝒅𝒊𝒐🔉
+║
+║ -bass
+║ -tempo
+║ -blown
+║ -deep
+║ -earrape
+║ -fast
+║ -fat
+║ -nightcore
+║ -reverse
+║ -robot
+║ -slow
+║ -squirrel
+║
+╚════════════╝
+╔════⧫💥𝑹𝒆𝒂𝒄𝒕𝒊𝒐𝒏𝒔💥
+║
+║ -bonk
+║ -cry
+║ -bully
+║ -cuddle
+║ -hug
+║ -kiss
+║ -lick
+║ -pat
+║ -smug
+║ -yeet
+║ -blush
+║ -smile
+║ -wave
+║ -highfive
+║ -handhold
+║ -nom
+║ -glomp
+║ -bite
+║ -slap
+║ -kill
+║ -happy
+║ -wink
+║ -poke
+║ -dance
+║ -cringe
+║
+╚════════════╝
+╠═══════✪「 MAKER 」
+╠${prefix}candy
+╠${prefix}blackpinkneon
+╠${prefix}deepsea
+╠${prefix}scifi
+╠${prefix}fiction
+╠${prefix}berry
+╠${prefix}fruitjuice
+╠${prefix}biscuit
+╠${prefix}wood
+╠${prefix}chocolate
+╠${prefix}matrix
+╠${prefix}blood
+╠${prefix}halloween
+╠${prefix}wicker
+╠${prefix}darkgold
+╠${prefix}firework
+╠${prefix}skeleton
+╠${prefix}sand
+╠${prefix}glue
+╠${prefix}leaves
+╠${prefix}magma
+╠${prefix}lava
+╠${prefix}rock
+╠${prefix}bloodglas
+╠${prefix}underwater
+╠${prefix}textmaker
+╠${prefix}honey
+╠${prefix}ice
+╠${prefix}watercolor
+╠${prefix}multicolor
+╠${prefix}snow
+╠${prefix}harrypot
+╠${prefix}harrypotter
+╠${prefix}brokenglass
+╠${prefix}waterpipe
+╠${prefix}spooky
+╠${prefix}circuit
+╠${prefix}metallic
+╠${prefix}demon
+╠${prefix}sparklechristmas
+╠${prefix}christmas
+╠${prefix}3dchristmas
+╠${prefix}3dbox
+╠${prefix}waterdrop
+╠${prefix}lion2
+╠${prefix}papercut
+╠${prefix}transformer
+╠${prefix}neondevil
+╠${prefix}3davengers
+╠${prefix}3dstone
+╠${prefix}3dstone2
+╠${prefix}summertime
+╠${prefix}thunder
+╠${prefix}window
+╠${prefix}graffiti
+╠${prefix}graffitibike
+╠${prefix}pornhub
+╠${prefix}glitch
+╠${prefix}blackpink
+╠${prefix}glitch2
+╠${prefix}glitch3
+╠${prefix}3dspace
+╠${prefix}lion
+╠${prefix}3dneon
+╠${prefix}greenneon
+╠${prefix}bokeh
+╠${prefix}holographic
+╠${prefix}bear
+╠${prefix}wolf
+╠${prefix}joker
+╠${prefix}dropwater
+╠${prefix}dropwater2
+╠${prefix}thewall
+╠${prefix}neonlight
+╠${prefix}natural
+╠${prefix}carbon
+╠${prefix}pencil
+╠${prefix}blackpink2
+╠${prefix}neon
+╠${prefix}neonlight2
+╠${prefix}toxic
+╠${prefix}strawberry
+╠${prefix}discovery
+╠${prefix}1917
+╠ ${prefix}sci_fi
+╠ ${prefix}ancient
+╠ ${prefix}fabric
+╠ ${prefix}hoorror
+╠ ${prefix}whitebear
+╠ ${prefix}juice
+╠ ${prefix}batman
+╠ ${prefix}multicolor
+╠ ${prefix}collwall
+╠ ${prefix}wonderful
+╠ ${prefix}cool
+╠ ${prefix}sketch
+╠ ${prefix}marvel
+╠ ${prefix}foggy
+╠ ${prefix}writing
+╠ ${prefix}halloweenfire
+╠ ${prefix}halloween
+╠ ${prefix}watercolor
+╠ ${prefix}classic
+╚════════════╝
+╔════⧫📥 *BACKCHODI* 📥
+║ -foolish
+║ -smart
+║ -idiot
+║ -gay
+║ -lesbi
+║ -bastard
+║ -stubble
+║ -dog
+║ -fuck
+║ -ape
+║ -noob
+║ -great
+║ -horny
+║ -wibu
+║ -asshole
+║ -handsome
+║ -beautiful
+║ -cute
+║ -kind
+║ -ugly
+║ -pretty
+║ -lesbian
+║ -randi
+║ -gandu
+║ -madarchod
+║ -kala
+║ -gora
+║ -chutiya
+║ -nibba
+║ -nibbi
+║ -bhosdiwala
+║ -chutmarika
+║ -bokachoda
+║ -suarerbaccha
+║ -bolochoda
+║ -muthal
+║ -muthbaaz
+║ -randibaaz
+║ -topibaaz
+║ -cunt
+║ -nerd
+║ -behenchod
+║ -behnchoda
+║ -bhosdika
+║ -nerd
+║ -mc
+║ -bsdk
+║ -bhosdk
+║ -nigger
+║ -loda
+║ -laund
+║ -nigga
+║ -noobra
+║ -tharki
+║ -nibba
+║ -nibbi
+║ -mumu
+║ -rascal
+║ -scumbag
+║ -nuts
+║ -comrade
+║ -fagot
+║ -scoundrel
+║ -ditch
+║ -dope
+║ -gucci
+║ -lit
+║ -dumbass
+║ -sexy
+║ -crackhead
+║ -mf
+║ -motherfucker
+║ -dogla
+║ -bewda
+║ -boka
+║ -khanki
+║ -bal
+║ -sucker
+║ -fuckboy
+║ -playboy
+║ -fuckgirl
+║ -playgirl
+║ -hot
+╚════════════╝
+╔════⧫📥𝑫𝒐𝒘𝒏𝒍𝒐𝒂𝒅𝒆𝒓📥
+║
+║ -play
+║ -ytmp3
+║ -ytmp4
+║ -ytvideo
+║ -mediafire
+║ -instagram
+║ -igtv
+║ -facebook
+║ -fbmp3
+║ -twitter
+║ -twittermp3
+║ -tiktok
+║ -tiktokaudio
+║ -tiktoknowm
+║
+╚════════════╝
+
+╔════⧫☄️𝑾𝒆𝒆𝒃☄️
+║
+║ -waifu
+║ -loli
+║ -neko
+║ -ppcouple
+║ -feed
+║ -foxgirl
+║ -meow
+║ -tickle
+║ -wallpaper
+║ -coffee
+║ -animenom
+║ -waifu3
+║ -neko2
+║ -migumin
+║ -awoo
+║ -anime
+║ -animewallpaper2
+║ -manga
+║
+╚════════════╝
+
+╔════⧫📣𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒗𝒆📣
+║
+║ -animequote
+║ -quote
+║ -covid
+║ -earthquake
+║ -wiki
+║
+╚════════════╝
+
+╔════⧫🦋𝑭𝒖𝒏🦋
+║
+║ -reaction
+║ -truth
+║ -dare
+║ -couple
+║ -soulmate
+║ -handsomecheck
+║ -beautifulcheck
+║ -awesomecheck
+║ -greatcheck
+║ -gaycheck
+║ -cutecheck
+║ -lesbiancheck
+║ -hornycheck
+║ -prettycheck
+║ -lovelycheck
+║ -uglycheck
+║ -charactercheck
+║ -quotes
+║ -darkjoke
+║ -stickermeme
+║
+╚════════════╝
+
+╔════⧫🐬𝑬𝒔𝒔𝒆𝒏𝒕𝒊𝒂𝒍/𝑶𝒕𝒉𝒆𝒓𝒔🐬
+║
+║ -translate
+║ -fliptext
+║ -toletter
+║
+╚════════════╝
+
+🍁 Type " *${prefix}nsfw* " then enable NSFW (Admin only!)
+🍁 Then type " *${prefix}nsfwmenu* " to get full list of NSFW commands.
+ 『  *${global.BotName}*  』
+ Powered by: *Zeeshan*
+
+ 🔰 To use any of these commands type
+ " *${prefix}<Command name>* ".
+
+ 🔰 To get Support Group link type " *${prefix}support* ".
+ 🔰 Type " *${prefix}help* " to get full command list.
+`,
+                            hydratedButtons: [{
+
+                                callButton: {
+                                    displayText: 'Owner Number',
+                                    phoneNumber: '91966253375'
+                                }
+                            },
+                            {
+                                urlButton: {
+                                    displayText: 'Yt',
+                                    url: 'https://citel.vercel.app'
+                                }
+                            },
+                            {
+                                urlButton: {
+                                    displayText: 'Git',
+                                    url: 'https://citel.vercel.app'
+                                }
+                            },
+
+
+                            {
+
+                                quickReplyButton: {
+                                    displayText: 'All Menu',
+                                    id: `${prefix}allmenu`
+                                }
+                                }, {
+                                quickReplyButton: {
+                                    displayText: 'List Menu',
+                                    id: `${prefix}command`
+                                }
+
+
+                                }, {
+                                quickReplyButton: {
+                                    displayText: 'Owner',
+                                    id: `${prefix}owner`
+                                }
+                            }]
+                        }
+                    }
+                }), { userJid: m.chat })
+                Miku.relayMessage(m.chat, template.message, { messageId: template.key.id })
+                }
+
+break
 
 
 case 'couplepp':  case 'ppcouple': {
@@ -3609,7 +4570,7 @@ case 'pinterest': case 'pin': {
 case 'swm': case 'take': case 'stickerwm': case 'steal':{
     if (isBan) return reply(mess.banned)
     if (isBanChat) return reply(mess.bangc)
-if (!args.join(" ")) return reply(`Use command: -steal Miku|By: Fantox`)
+if (!args.join(" ")) return reply(`Use command: -steal Miku|By: Zeeshan`)
 const swn = args.join(" ")
 const pcknm = swn.split("|")[0];
 const atnm = swn.split("|")[1];
@@ -3618,7 +4579,7 @@ Miku.downloadAndSaveMediaMessage(quoted, "gifee")
 Miku.sendMessage(from, {sticker:fs.readFileSync("gifee.webp")},{quoted:m})
 } else if (/image/.test(mime)) {
 let media = await quoted.download()
-let encmedia = await Miku.sendImageAsSticker(m.chat, media, m, { packname: pcknm, author: atnm })
+let encmedia = await Miku.sendImageAsSticker(m.chat, media, m, { packname: pcknm, author: global.atnm })
 await fs.unlinkSync(encmedia)
 } else if (/video/.test(mime)) {
 if ((quoted.msg || quoted).seconds > 11) return reply('Maximum 10 seconds is allowed!')
@@ -3698,6 +4659,17 @@ var { kasus, kematian, sembuh } = c[0]
 Miku.sendMessage(from, {text : `Case : ${kasus}\n\nDead : ${kematian}\n\nHealed : ${sembuh}`}, m)
 break
 
+case 'playstore': case 'apk':
+    if (isBan) return reply(mess.banned)
+    if (isBanChat) return reply(mess.bangc)
+if(!q) return reply('Pls enter a search term!')
+let play = await hx.playstore(q)
+let storee = '─────────────────────\n'
+for (let i of play){
+storee += `\n「  *Google Play*  」\n\n*Name* : ${i.name}\n*Link* : ${i.link}\n*Dev* : ${i.developer}*Dev Link* : ${i.link_dev}\n─────────────────────`
+}
+reply(storee)
+break
 
 case 'couple': case 'ship': {
     if (isBan) return reply(mess.banned)
@@ -3736,7 +4708,7 @@ break
 case 'handsomecheck':
     if (isBan) return reply(mess.banned)
     if (isBanChat) return reply(mess.bangc)
-				if (!text) return replay(`Tag Someone, Example : ${prefix + command} @Fantox`)
+				if (!text) return replay(`Tag Someone, Example : ${prefix + command} @Zeeshan`)
 					const gan = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100']
 					const teng = gan[Math.floor(Math.random() * gan.length)]
 Miku.sendMessage(from, { text: `*${command}*\n\nName : ${q}\nAnswer : *${teng}%*` }, { quoted: m })
@@ -3744,7 +4716,7 @@ Miku.sendMessage(from, { text: `*${command}*\n\nName : ${q}\nAnswer : *${teng}%*
 case 'beautifulcheck':
     if (isBan) return reply(mess.banned)
     if (isBanChat) return reply(mess.bangc)
-				if (!text) return replay(`Tag Someone, Example : ${prefix + command} @Fantox`)
+				if (!text) return replay(`Tag Someone, Example : ${prefix + command} @Zeeshan`)
 					const can = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100']
 					const tik = can[Math.floor(Math.random() * can.length)]
 Miku.sendMessage(from, { text: `*${command}*\n\nName : ${q}\nAnswer : *${tik}%*` }, { quoted: m })
@@ -3761,7 +4733,7 @@ case 'awesomecheck':
                       case 'uglycheck':
                         if (isBan) return reply(mess.banned)
                         if (isBanChat) return reply(mess.bangc)
-				if (!text) return replay(`Tag Someone, Example : ${prefix + command} @Fantox`)
+				if (!text) return replay(`Tag Someone, Example : ${prefix + command} @Zeeshan`)
 					const sangeh = ['1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','37','38','39','40','41','42','43','44','45','46','47','48','49','50','51','52','53','54','55','56','57','58','59','60','61','62','63','64','65','66','67','68','69','70','71','72','73','74','75','76','77','78','79','80','81','82','83','84','85','86','87','88','89','90','91','92','93','94','95','96','97','98','99','100']
 					const sange = sangeh[Math.floor(Math.random() * sangeh.length)]
 Miku.sendMessage(from, { text: `*${command}*\n\nName : ${q}\nAnswer : *${sange}%*` }, { quoted: m })
@@ -3771,16 +4743,431 @@ Miku.sendMessage(from, { text: `*${command}*\n\nName : ${q}\nAnswer : *${sange}%
 case 'charactercheck':
     if (isBan) return reply(mess.banned)
     if (isBanChat) return reply(mess.bangc)
-					if (!text) return replay(`Tag Someone, Example : ${prefix + command} @Fantox`)
+					if (!text) return replay(`Tag Someone, Example : ${prefix + command} @Zeeshan`)
 					const Mikutttt =['Compassionate','Generous','Grumpy','Forgiving','Obedient','Good','Simp','Kind-Hearted','patient','UwU','top, anyway','Helpful']
 					const taky = Mikutttt[Math.floor(Math.random() * Mikutttt.length)]
-					Miku.sendMessage(from, { text: `Character Check : ${q}\nAnswer : *${taky}*` }, { quoted: m })
+					Miku.sendMessage(from, { react: { text: `${global.reactmoji}`, key: m.key }}, { text: `Character Check : ${q}\nAnswer : *${taky}*` }, { quoted: m })
 				     break
-                   
+
+      case 'foolish':
+      case 'smart':
+      case 'idiot':
+      case 'gay':
+      case 'lesbi':
+      case 'bastard':
+      case 'stubble':
+      case 'dog':
+      case 'fuck':
+      case 'ape':
+      case 'noob':
+      case 'great':
+      case 'horny':
+      case 'wibu':
+      case 'asshole':
+      case 'handsome':
+      case 'beautiful':
+      case 'cute':
+      case 'kind':
+      case 'ugly':
+      case 'pretty':
+      case 'lesbian':
+      case 'randi':
+      case 'gandu':
+      case 'madarchod':
+      case 'kala':
+      case 'gora':
+      case 'chutiya':
+      case 'nibba':
+      case 'nibbi':
+      case 'bhosdiwala':
+      case 'chutmarika':
+      case 'bokachoda':
+      case 'suarerbaccha':
+      case 'bolochoda':
+      case 'muthal':
+      case 'muthbaaz':
+      case 'randibaaz':
+      case 'topibaaz':
+      case 'cunt':
+      case 'nerd':
+      case 'behenchod':
+      case 'behnchoda':
+      case 'bhosdika':
+      case 'nerd':
+      case 'mc':
+      case 'bsdk':
+      case 'bhosdk':
+      case 'nigger':
+      case 'loda':
+      case 'laund':
+      case 'nigga':
+      case 'noobra':
+      case 'tharki':
+      case 'nibba':
+      case 'nibbi':
+      case 'mumu':
+      case 'rascal':
+      case 'scumbag':
+      case 'nuts':
+      case 'comrade':
+      case 'fagot':
+      case 'scoundrel':
+      case 'ditch':
+      case 'dope':
+      case 'gucci':
+      case 'lit':
+      case 'dumbass':
+      case 'sexy':
+      case 'crackhead':
+      case 'mf':
+      case 'motherfucker':
+      case 'dogla':
+      case 'bewda':
+      case 'boka':
+      case 'khanki':
+      case 'bal':
+      case 'sucker':
+      case 'fuckboy':
+      case 'playboy':
+      case 'fuckgirl':
+      case 'playgirl':
+      case 'hot': {
+      	            	if (isBan) return reply(mess.ban)
+	if (isBanChat) return reply(mess.banChat)
+            if (!m.isGroup) return replay(`${mess.group}`)
+            let member = participants.map(u => u.id)
+            let me = m.sender
+            let jodoh = member[Math.floor(Math.random() * member.length)]
+            let jawab = `The Most *${command}* Here Is @${jodoh.split('@')[0]}`
+            let ments = [me, jodoh]
+            let buttons = [
+                        { buttonId: '👀', buttonText: { displayText: '👀😂' }, type: 1 }
+                    ]
+                    await Miku.sendButtonText(m.chat, buttons, jawab, Miku, m, {mentions: ments})
+            }
+            break
+
+case 'when':
+if (isBan) return reply(mess.ban)	 			
+if (isBanChat) return reply(mess.banChat)
+				if (!text) return replay(`Use Text, Example : ${command} will i get married `)
+					const kapan = ['5 More Days', '10 More Days', '15 More Days','20 More Days', '25 More Days','30 More Days','35 More Days','40 More Days','45 More Days','50 More Days','55 More Days','60 More Days','65 More Days','70 More Days','75 More Days','80 More Days','85 More Days','90 More Days','100 More Days','5 Months More', '10 Months More', '15 Months More','20 Months More', '25 Months More','30 Months More','35 Months More','40 Months More','45 Months More','50 Months More','55 Months More','60 Months More','65 Months More','70 Months More','75 Months More','80 Months More','85 Months More','90 Months More','100 Months More','1 More Year','2 More Years','3 More Years','4 More Years','5 More Years','Tomorrow','The Day After Tomorrow',`After This Command, You Too ${q}`]
+					const kapankah = kapan[Math.floor(Math.random() * kapan.length)]
+Miku.sendMessage(from, { text: `Question : ${q}\nAnswer : *${kapankah}*` }, { quoted: m })
+					break
+		
  case 'dare':
     if (isBan) return reply(mess.banned)
     if (isBanChat) return reply(mess.bangc)
                    const dare =[
+         "Do a sexy dance for your partner, but you can only use one leg.",
+         "Your partner has to ride you like a cowboy and you have to buck like a bronco.",
+         "You have to wear handcuffs for the rest of the game.",
+         "Trade clothes with your partner.",
+         "Take a body shot.",
+         "Make out with them.",
+         "Give them a massage.",
+         "Remove your bra without taking off your shirt.",
+         "Take off their shirt with only your teeth.",
+         "Beg them to make out with you. They have to refuse. Keep trying to convince them in different ways for two minutes.",
+         "Put on sexy music and vacuum with no pants on.",
+         "You have to do whatever they tell you for one minute.",
+         "Stand up and do your best impersonation of the person on your right.",
+         "Empty your purse, backpack, or wallet, and let everyone see what you have.",
+         "Take a selfie with the person next to you, and post it on social media along with a deep and emotional paragraph about what they mean to you.",
+         "Go outside to the trash bin and throw a tantrum because someone put trash in it.",
+         "Go for a short walk outside and while walking, hold a conversation with yourself.",
+         "Go outside, and while skipping down the street, sing “Let it Go’ from Frozen.",
+         "Crack an egg on your head.",
+         "Choose one inanimate object that is in the room. Now spend the next 2-minutes telling the group what that object is thinking.",
+         "For the rest of the game, you must cluck like a chicken at the beginning and end of everything you say.",
+         "Eat a spoonful of hot sauce.",
+         "For the next 15 minutes, everything you say must be spoken in baby talk.",
+         "Smell someone else’s shoes",
+         "Stick out your tongue and talk that way until your next turn.",
+         "Do your best impression of someone in the room and keep going until someone correctly guesses who it is.",
+         "Give 5 dollars to each player if you curse at any point during the game.",
+         "Repeat everything the person to your left says until your next turn.",
+         "Stand up and dance the twist until your next turn.",
+         "Name the person in the room who you think is the best dressed.",
+         "Hand your phone to the person across from you and let them post whatever they want to your social media accounts.",
+         "Get a bar of soap from the bathroom and sell it to the group for 3 minutes.",
+         "Dig through the trash and name everything you find.",
+         "Sing the chorus of your favorite song.",
+         "Call the nearest gas station and ask them if they sell hemorrhoid cream.",
+         "Let the other players go through your phone for a minute.",
+         "Stand up and do jumping jacks until your next turn.",
+         "Stick a Hot Cheeto in your nose and leave it there for 5 minutes.",
+         "Sniff another player’s armpit for 10 seconds.",
+         "Take someone with you outside in the sight of the neighbors and stare into the sky until someone asks you what you are looking at, then tell them that you saw a UFO.",
+         "Jump into a dumpster.",
+         "Take the socks off the person’s feet across from you and wear them like gloves until your next turn.",
+         "Act as a cheerleader and cheer about the host of the party.",
+         "For the rest of the game, speak like you are the President of America.",
+         "Let another player throw flour in your face.",
+         "Give your phone to another player to send a text message to their contact of choice.",
+         "Allow the person to your left to cut your hair however they see fit.",
+         "Tie your shoe strings together with another person and walk together to the end of the driveway and back.",
+         "Take the socks off the person’s feet across from you and wear them like gloves until your next turn.",
+         "Stick an egg in the microwave and attempt to juggle it for 30 seconds.",
+         "Take off your shoe and clean your foot as though you are an animal.",
+         "Stand in the backyard and yell at the top of your lungs, “I was adopted! Nooooooo.”",
+         "Make a sandwich while blindfolded.",
+         "Get a magazine and go outside. Roll up the magazine, put it on your nose, and act and sound like an elephant.",
+         "With your eyes closed, pick someone from your contact list and send them a text.",
+         "Knock on the neighbor’s door and ask if you can park your helicopter in their driveway.",
+         "Pretend like you are drunk for the rest of the game.",
+         "Let a person in the group put a leash on you and walk you down the street.",
+         "Write a letter to your doctor describing an embarrassing rash you have, and post it on Facebook.",
+         "Lick a car tire.",
+         "Allow the person to your right to tickle you.",
+         "Call someone and confess your newfound love for Justin Bieber.",
+         "Attempt to lick your elbow for at least five minutes.",
+         "Get a mouthful of water and gargle it until your next turn.",
+         "Kiss the person to your right on the cheek.",
+         "Tell a bizarre 2-minute story about the night you slept in the woods.",
+         "Go in the kitchen and rearrange everything in the food pantry in alphabetical order.",
+         "Stop a car that is going down the street and tell them that its wheels are turning.",
+         "From now until your next turn, every time someone talks, interrupt by saying, “that’s a lie.”",
+         "Eat a whole piece of paper.",
+         "Write your name on the floor with your tongue.",
+         "Speak in the voice of your favorite cartoon character until your next turn.",
+         "Let the person across from you give you a wedgie.",
+         "Let your friends pose you and stay like that until the next round.",
+         "Awkwardly smell someone else’s hair until they notice.",
+         "Eat a spoonful of mustard.",
+         "Make up a short cheer and shout it to the room.",
+         "Close your eyes and let your friends put whatever food from the fridge they want in your mouth.",
+         "Call a realtor and show genuine interest in a random house for several minutes.",
+         "Open Facebook, go to the account of the first person you see, and like every post on their wall going back to a year.",
+         "Make the sound of a dripping faucet until your next turn.",
+         "Make a hat out of aluminum foil then put the hat on and post a selfie on social media. Leave the hat on for the duration of the game.",
+         "Rearrange all the pictures in the room according to their size.",
+         "Serenade the person next to you.",
+         "Cover your hair with shaving cream and leave it on until the end of the game.",
+         "Be silent and say nothing from now until your next turn.",
+         "Put a bunch of honey on your nose and coat it with flour",
+         "From now until the end of the game, every time you talk, speak like a robot.",
+         "Text your mom and tell her that you are expecting a baby.",
+         "Make up a song about the host of the party.",
+         "Do your best impersonation of someone else in the room and keep going until someone else guesses who you are.",
+         "Eat a raw egg.",
+         "Make confetti out of a tissue.",
+         "Let each player choose one word, then attempt to form a sentence with it and post it to Facebook.",
+         "Name the person in the room who you think is the worst dressed.",
+         "Sit on your hands for the remainder of the game.",
+         "Stand up and do your best impersonation of your mom.",
+         "While blindfolded, you must eat something that the person to your left chooses to feed you.",
+         "Sniff the person to your left and tell them they smell bad.",
+         "Eat a raw onion and do your best not to cry.",
+         "Make a sandwich containing every condiment in your refrigerator.",
+         "Allow someone to pour ice down your shirt and pants.",
+         "One by one, make up a title for each player’s movie about their life.",
+         "Do the chicken dance to no music until your next turn.",
+         "Walk outside frantically carrying an empty leash and approach people asking them if they have seen your pet alligator because it just escaped.",
+         "Fill your mouth with water and act as a fountain.",
+         "Use ketchup to put the mark of Simba on your forehead.",
+         "Do everything with “crab hands” for the rest of the game.",
+         "Knock on the neighbor’s door and explain to them that your pet penguin got loose and ask if you can look for it in their backyard.",
+         "Go outside and pick exactly 40 blades of grass with a pair of tweezers.",
+         "Bust your best dance move right now.",
+         "Let each person in the group slap you as hard as they can on your butt.",
+         "Describe what the sky looks like without using the words blue or white.",
+         "Stick your head in the toilet.",
+         "Put a piece of American cheese on your cheek and leave it until your next turn.",
+         "Go to the bathroom, and the person to your left has to be in there with you the whole time.",
+         "Close your eyes and let everyone draw on you for 5 minutes.",
+         "Lick mayonnaise off of someone’s toe.",
+         "Rub your armpits and then smell your fingers.",
+         "Exchange shirts with the person to your left and wear them for the remainder of the game.",
+         "Eat a single spaghetti-like in Lady and the Tramp with the person to your left.",
+         "For the rest of the game you must say your name at the beginning and the end of every sentence you speak.",
+         "Let the group choose 3 random things from the refrigerator and mix it. Then you have to eat it.",
+         "Eat a spoonful of hot sauce.",
+         "Trade socks with the person to your right.",
+         "Invent a new color for nail polish and describe the person who would be most likely to wear it.",
+         "Put makeup on the person sitting the farthest away from you.",
+         "Hang your socks from your ears until the end of the game.",
+         "Make eye contact with a player and don’t break it until it’s your turn again.",
+         "Rub your armpits and then smell your fingers.",
+         "Go into the bathroom and look in the cabinet. Write a summary of what you find and read it to the group.",
+         "Tell someone something negative you have said about them in private.",
+         "Have the person to your right do 10 squats while you lie underneath them.",
+         "Dump a bunch of legos on the floor and walk over it with your bare feet.",
+         "Let the person to your right put duct tape on any part of your body they choose and rip it off.",
+         "Go outside and pick exactly 40 blades of grass with a pair of tweezers.",
+         "Imagine the person to your left is your pet, talk to them as though you just got home.",
+         "Spin around 10 times and try to walk straight.",
+         "Text your siblings and tell them that you just found out you are adopted.",
+         "Imagine that you are a dog and act like it until your next turn.",
+         "Someone has to dip their finger in the trash can and you have to lick it.",
+         "Turn your pants inside out and wear them.",
+         "You notice that the person sitting on your right has something on their face, spit on your finger and wipe it off for them.",
+         "Dance aggressively until you run out of breath.",
+         "Be blindfolded and let someone feed you something.",
+         "Describe to the group what your last bathroom experience was like.",
+         "Reenact what you think it is like to give birth.",
+         "Wear your clothes backward for the duration of the game.",
+         "For the rest of the game, you must only communicate using animal sounds.",
+         "Stand up and do jumping jacks until your next turn.",
+         "Whoever’s name begins with an A in the group must call your parents and tell them what a bad friend you are to them.",
+         "Open your front door and howl like a wolf for 30 seconds.",
+         "Text a friend and tell them their hair is backward.",
+         "Every time someone chooses to dare, walk across the floor like a crab and embrace them with a hug.",
+         "Open Facebook and “like” the first thing that pops up even if you disagree with it.",
+         "Get down on one knee and propose to the person on your left.",
+         "Hold hands with the person to your left for the rest of the game.",
+         "For the next 10 minutes, when someone speaks, put your ear up close to them and act as though you can’t hear what they are saying.",
+         "Lift the couch cushions, and if there is anything under it, you need to put it in your mouth for 10 seconds.",
+         "I dare you to tie your hands to your ankles for the rest of the game.",
+         "Sing a song chosen by the group while eating spoonfuls of peanut butter.",
+         "Let the group choose an item for you to brush your teeth with.",
+         "Allow the other players to blindfold you. And then guess who each player is just by sniffing them.",
+         "Give the player to your right a piggyback ride around the room.",
+         "Take a shot of lime juice.",
+         "Bite down on both of your pinky fingers for fifteen seconds, then tightly interlock your pinkies.",
+         "Eat a small portion of toothpaste.",
+         "Moonwalk down the street in front of your house.",
+         "Lick the ear of the player across from you.",
+         "Seduce a stuffed animal.",
+         "Smell all the other players’ breath and rate it 1-10.",
+         "Prank call the last person that called you.",
+         "Let the other players give you a makeover, using condiments as makeup.",
+         "Put your finger in another player’s nose.",
+         "Lick a bar of soap.",
+         "Do 25 sit-ups.",
+         "Sing the alphabet backward, every time you mess up another player is allowed to pinch you.",
+         "Hum a song of your choice, don’t stop until someone correctly guesses the song.",
+         "Hug a stranger and don’t let go for five seconds.",
+         "Do the splits, or go down as far as you can if you can’t do a full split.",
+         "Eat a piece of food without using your hands",
+         "Eat a spoonful of cinnamon.",
+         "Wear a necklace made out of floss, which another player has just used, for the next 5 rounds.",
+         "Do your best touchdown celebration dance.",
+         "Trade one article of clothing with another player for the next 2 rounds.",
+         "Put peanut butter between your toes and let a dog lick it off, or sit with it there for the next 4 rounds if no dog is nearby.",
+         "Cut another player’s toenails.",
+         "Wear your underwear on the outside of your clothes for the next ten minutes.",
+         "Put an ice cube down your pants and let it melt.",
+         "Pretend like you are embarrassed for other people to see your thumbs.",
+         "Take a bite out of a stick of chapstick or lipstick.",
+         "Go commando for the next 5 rounds.",
+         "Drink a glass of water while upside down.",
+         "Allow the other players to do your eyebrows.",
+         "Do a wall sit for 60 seconds.",
+         "Passionately makeup with the palm of your hand.",
+         "Chew a piece of gum with the wrapper still on.",
+         "Put your finger in your ear and then lick your finger.",
+         "Only speak using song lyrics for the next 3 rounds.",
+         "Let the other players wrap you up in toilet paper and stay like that for the rest of the game.",
+         "Lick your big toe.",
+         "Close your eyes and have another player place your finger on a part of their body, then guess what part you are touching.",
+         "Shave a strip of hair from your arm.",
+         "Make the ugliest face you can make.",
+         "Take a shot of toilet water.",
+         "Tie your hands to your ankles and stay like that for the next 4 rounds.",
+         "Chug a glass of milk.",
+         "Stick your hand in the toilet bowl for 3 seconds.",
+         "Put as many marshmallows in your mouth as you can.",
+         "Do your best yodel.",
+         "Eat a clove of garlic.",
+         "Communicate only by whistling for the next 5 minutes.",
+         "Drink a mystery cocktail created by the other players.",
+         "Eat a booger.",
+         "Skip backward in a circle while saying a tongue twister.",
+         "Make a sandwich, blindfolded.",
+         "Smell all of the other players’ feet.",
+         "Shave off one of your eyebrows.",
+         "Let another player rock you like a baby.",
+         "Lick another player’s palm.",
+         "Eat a raw onion.",
+         "Give yourself a scalp massage using vegetable oil.",
+         "Bite another player’s fingernails.",
+         "Lick the elbow of the person beside you",
+         "Roast everybody that is playing the game.",
+         "Play imaginary limbo. How low can you go?",
+         "Eat a tablespoon of butter.",
+         "Go as long as you can without blinking.",
+         "Try to kick yourself in the face.",
+         "Chew on a piece of tape for the remainder of the round.",
+         "Allow the other players to send one text to anyone in your contact list.",
+         "Get a stranger to smell your breath.",
+         "Chew on a piece of tin foil for 30 seconds.",
+         "Take off your socks using only your teeth.",
+         "Do the worm.",
+         "Sit with a wet sponge on your head for the next 5 rounds.",
+         "Let your dog lick you on the mouth.",
+         "Take a shower with your clothes on.",
+         "Draw a face on your stomach and talk using your stomach face for the next 5 rounds.",
+         "Ask your neighbor if they’ve seen your missing tractor, and imply that they stole it.",
+         "Do your best Michael Jackson impersonation.",
+         "Call Subway or a local sub shop and ask how long their foot-long sub is.",
+         "Smell another player’s armpit.",
+         "Dance to your favorite song, in its entirety, in your driveway.",
+         "Eat a banana with the peel on.",
+         "Do jumping jacks until it is your turn again.",
+         "Stand on one leg for 10 minutes.",
+         "Eat a banana and then chug a can of sprite.",
+         "Do your best acceptance speech for an award of your choice.",
+         "Take a deep breath of the socks you are wearing right now.",
+         "Walk like a crab for 3 minutes.",
+         "Call your mom and tell her you got engaged.",
+         "Play the next 3 rounds with a slice of onion underneath both of your eyes.",
+         "Show the other players the five most recent photos in your camera roll.",
+         "Give the person to your left a foot rub.",
+         "Talk like Shakespeare for the next 3 rounds.",
+         "Allow another player to “mama bird” a piece of food, to you, the “baby bird”.",
+         "Choose another player to give you a wet willy.",
+         "Put on makeup without looking in a mirror.",
+         "What is a common skill (ex. Whistling), that you do not possess?",
+         "Make up a song and sing it.",
+         "Eat a leaf.",
+         "Pour a glass of ice water on your head.",
+         "Wear your pants backward for the next 3 rounds.",
+         "Hula hoop for 2 minutes.",
+         "Lick the floor.",
+         "Lick another player’s toes.",
+         "Allow another player to slap you in the face.",
+         "Eat a piece of toilet paper.",
+         "Lick your armpit.",
+         "Tickle the next person you see who is not playing the game.",
+         "Try to sing a song with a mouthful of water.",
+         "Cut some of your hair, even if it is just a small strand.",
+         "Suck on your thumb for the next 3 rounds",
+         "Take off another player’s sock without using your hands.",
+         "Let another player draw something on your face.",
+         "Peel a potato with your teeth.",
+         "Finish another player’s drink.",
+         "Open the closest book to a random page, a point at a random sentence, and then text that sentence to the last person that texted you without giving any other context.",
+         "Post a picture of your toilet on social media, with a “deep” quote as the caption.",
+         "Eat a piece of dog food and try to convince the other players it’s delicious.",
+         "Play the next 3 rounds blindfolded.",
+         "Eat a piece of fruit off of the stomach of the player to your right.",
+         "Let another player post something on one of your social media accounts.",
+         "Do the salt and ice challenge.",
+         "Dance like a ballerina for 2 minutes.",
+         "Put a pillow under your shirt and pretend to be going into labor.",
+         "Let another player lick chocolate syrup off of your stomach.",
+         "Try to juggle three potatoes.",
+         "Make a sandwich with your hands tied behind your back and eat it.",
+         "Put on the national anthem and do your sexiest dance to it.",
+         "Prank call someone at work and tell them you’ve always loved them (you can use something to disguise your number).",
+         "Endorse an old co-worker for something completely random on LinkedIn",
+         "Put a colander on your head and sing Space Oddity by David Bowie.",
+         "Make your 10 best fart noises.",
+         "Eat one tablespoon of coffee grounds while saying “Mmmmm, very yummy!”",
+         "You have to eat macaroni and cheese, but instead of cheese, it’s macaroni and mayonnaise.",
+         "Make out with a belly button.",
+         "Do a 1-minute freestyle rap with a bunch of marshmallows in your mouth (be careful not to choke!)",
+         "Put on a swimming suit and clean the oven. (Like, actually clean it).",
+         "Take someone’s shoe and tell it what a filthy, bad, naughty shoe it’s been for one minute.",
+         "Make a bowl of spaghetti and eat it with your feet.",
+         "Everyone calls you “Weiner” for the rest of the night.",
+         "Make a bowl of spaghetti and eat it without using your hands.",
+         "Put a pair of pantyhose on your head and skip around the block singing “La la la la la la.”",
+         "Find the oldest profile picture that you ever had on Facebook and make it your profile picture once again.",
+         "Let someone else get on one of your online dating profiles and use it for 3 minutes to do whatever they want.",
+         "You have to drink one cup of smoothie made out of ice cubes, water, and three other ingredients that someone else gets to choose.",
          "eat 2 tablespoons of rice without any side dishes, if it's dragging you can drink",
          "spill people who make you pause",
          "call crush/pickle now and send ss",
@@ -3788,7 +5175,6 @@ case 'charactercheck':
          "say Welcome to Who Wants To Be a Millionaire! to all the groups you have",
          "call ex saying miss",
          "sing the chorus of the last song you played",
-         "vn your ex/crush/girlfriend, says hi (name), wants to call, just a moment. I miss🥺👉🏼👈🏼",
          "Bang on the table (which is at home) until you get scolded for being noisy",
          "Tell random people - I was just told I was your twin first, we separated, then I had plastic surgery. And this is the most ciyusss_ thing",
          "mention ex's name",
@@ -3851,7 +5237,7 @@ case 'charactercheck':
          "shout you bastard in front of your mom/papa",
          "change the name to i am idiot for 24 hours",
          "slap urself firmly and send the sound of slap through voice note😂",
-         "say i love the bot owner Fantox through voice note",
+         "say i love the bot owner Zeeshan through voice note",
          "send your gf/bf pic here",
          "make any tiktok dance challenge video and put it on status, u can delete it after 5hrs",
          "breakup with your best friend for 5hrs without telling him/her that its a dare",
@@ -3864,7 +5250,7 @@ case 'charactercheck':
           "send abusive words in any grup, excepting this grup, and send screenshot proof here"
      ]
                    const Mikudareww = dare[Math.floor(Math.random() * dare.length)]
-                   buffer = await getBuffer(`https://wallpapercave.com/wp/wp10524609.jpg`)
+                   buffer = await getBuffer(`https://source.unsplash.com/720x600/?asthetic`)
                    Miku.sendMessage(from, { image: buffer, caption: '*You have chosen Dare*\n\n'+ Mikudareww }, {quoted:m})
                    break
                        
@@ -3873,6 +5259,367 @@ case 'truth':
     if (isBan) return reply(mess.banned)
     if (isBanChat) return reply(mess.bangc)
                            const truth =[
+                 "How do you really feel about anal sex?",
+                 "How old were you when you got your first cell phone?",
+                 "Do you prefer Facebook or Twitter?",
+                 "Of the people in this room, who would you feel most comfortable with naked?",
+                 "Have you ever had an argument with someone through text?",
+                 "Say your biggest fear in life.",
+                 "Describe your favorite activity when you’re alone.",
+                 "Who would rather be stuck on a desert island: the person on your left or on your right?",
+                 "What’s the weirdest thing you’ve done when you were alone?",
+                 "What’s the biggest dating disappointment you’ve experienced so far?",
+                 "Do you have any tattoos and if so, where?",
+                 "Have you ever met a celebrity, if so, who?",
+                 "What is the best time of day for you?",
+                 "Describe the worst day you’ve ever had.",
+                 "What’s the biggest secret you’ve ever kept from your boyfriend or girlfriend?",
+                 "Who was your first crush?",
+                 "At what age did you first start having sexy thoughts and what prompted them?",
+                 "When is the last time you brushed your teeth?",
+                 "If you could live anywhere in the world, where would it be?",
+                 "Have you ever shoplifted or stolen anything?",
+                 "What was the last thing you ate?",
+                 "Have you ever been married?",
+                 "Do you prefer mushy movies or funny ones?",
+                 "What do you like to do when you are with your friends?",
+                 "For parents: which is your favorite child? For children: which is your favorite parent?",
+                 "What’s your favorite sex toy (hypothetically, or from experience)?",
+                 "Describe the worst date you’ve ever been on.",
+                 "What sexual activity do you consider totally off limits?",
+                 "How far would you go to land the guy or girl of your dreams?",
+                 "What’s the one thing you’d do in bed with someone if you had no inhibitions whatsoever?",
+                 "Of the people in this room, who do you consider the sluttiest?",
+                 "What three adjectives best describe your private parts?",
+                 "Have you ever blamed your sibling for something you did just so that you wouldn’t get in trouble?",
+                 "Where do you like to go when you’re feeling down?",
+                 "What do you like to wear when no one is around?",
+                 "What would you guess your parents’ favorite sexual position is, and why?",
+                 "What is your favorite month and why?",
+                 "How many different languages can you speak and what are they?",
+                 "What food do you absolutely despise?",
+                 "What’s the most disgusting thing you’ve ever done?",
+                 "What’s the first thing you’d do if you woke up one day and you were the opposite sex?",
+                 "Have you ever sent a love message to your boss by accident that was meant for someone else?",
+                 "If you didn’t have to work, what would you do with all your time?",
+                 "Have you ever failed a test? What was it?",
+                 "What is your favorite song?",
+                 "What would you change about your love life if you could?",
+                 "What’s sexual milestone has been most memorable for you so far?",
+                 "What’s the weirdest thing you’ve ever done in front of the mirror?",
+                 "Have you ever been to the opera?",
+                 "When is the last time you took a shower?",
+                 "What is your most regrettable kiss?",
+                 "What’s the grossest thing that’s come out of your body?",
+                 "What’s the most surprising thing that’s ever turned you on?",
+                 "What’s the biggest romantic fail you’ve ever experienced?",
+                 "What is the grossest thing you’ve ever eaten?",
+                 "Who is your favorite teacher and why?",
+                 "Who is your most annoying neighbor?",
+                 "How old were you when your parents sat you down for “the talk” and what did they say (or not say) about “the birds and the bees”?",
+                 "Who would you rather live with: Miley Cyrus, Snoop Dogg, or Adam Levine?",
+                 "What’s your biggest sexual fear?",
+                 "What season is your favorite?",
+                 "How many people can someone sleep with before you secretly judge them for their “number”?",
+                 "Of the people in this room, who do you most want to make out with?",
+                 "When’s the last time you were flat-out rejected and how did you handle it?",
+                 "Do you like to read and if so, what is your favorite book?",
+                 "If you could make out with any celebrity right this second, who would it be?",
+                 "What’s the most disturbing fantasy or dream you’ve ever had?",
+                 "Of the people in this room, who do you most want to caress?",
+                 "If you could be someone else for a day who would you be?",
+                 "What do you like most and least about your significant other’s appearance?",
+                 "What time of day do you feel most aroused and what do you usually do about it?",
+                 "What’s the most flirtatious thing you’ve ever done?",
+                 "What’s the funniest urge you’ve ever had?",
+                 "Which do you like better, cars or trucks?",
+                 "Tell us about your favorite possession.",
+                 "What’s the cruelest thing you’ve ever done to a boyfriend or girlfriend?",
+                 "What’s your favorite go-to move for getting attention from the opposite sex?",
+                 "What was the best day you ever had?",
+                 "What is your favorite fruit?",
+                 "What is the spiciest thing you’ve ever eaten?",
+                 "What is one thing your grandparents taught you how to do?",
+                 "If you only had two minutes to get out of your house, what would you grab?",
+                 "What do you like to put on your toast?",
+                 "What does the perfect male/female body look like (from head to toe and everything in between) in your opinion?",
+                 "What is your least favorite time of the day?",
+                 "How old were you when you had your first crush?",
+                 "What is your favorite outdoor pastime?",
+                 "If you could be fluent in one of these languages which would it be: Chinese, French or Russian?",
+                 "Have you ever been to the zoo?",
+                 "What’s the most embarrassing thing your parents have caught you doing?",
+                 "What’s the most awkward experience you’ve had with a crush?",
+                 "What was the name of the street you grew up on?",
+                 "Did you have a nickname as a child and if so, what was it?",
+                 "If you could erase one past sexual experience, what would it be?",
+                 "Who is the person you are the most jealous of and why?",
+                 "Of the people in this room, who would you most want to have a kid with?",
+                 "What do you like most and least about your own appearance?",
+                 "Which do you like better, Coca-Cola or Pepsi?",
+                 "What’s the biggest sexual regret you have?",
+                 "Who was your longest secret crush?",
+                 "What’s the funniest thing you’ve ever said to someone you had a crush on?",
+                 "Do you have a special talent and if so, what is it?",
+                 "What is something you have never told anyone in this room?",
+                 "What’s the most number of times you’ve ever masturbated within one week?",
+                 "What’s the biggest lie you’ve ever told your boyfriend or girlfriend—without getting caught?",
+                 "What’s the dirtiest thought you’ve ever had?",
+                 "Name the three websites you visit the most.",
+                 "What is your favorite vegetable?",
+                 "Do you ever catch yourself thinking about doing it with someone of the same sex?",
+                 "Who would you rather marry: Brad Pitt, Zach Efron, or Antonio Banderas?",
+                 "Have you ever been outside of the country?",
+                 "What did you think about the first (or last) time you masturbated?",
+                 "Do you prefer talking or texting?",
+                 "What’s the craziest thing you’ve ever done to attract a crush?",
+                 "Things you want to say to your current boss.",
+                 "According to you, who has bad teeth? Ok, so Brush their teeth.",
+                 "Send a request to a random guy on Facebook and message them to accept the request immediately.",
+                 "What about skinny dipping?",
+                 "The reason behind your fit body… Routine exercise or Steroids.",
+                 "Perform 50 squats.",
+                 "Have a vinegar shot.",
+                 "Mimic the person you hate for 10 mins.",
+                 "Call your partner and tell him/her you were cheating on them.",
+                 "Pay the bill for dinner.",
+                 "Has anyone ever walked in on you in the bathroom?",
+                 "Have you ever worn a dress?",
+                 "Send your one photo to your boss.",
+                 "Call the last person you texted and shout on him/her.",
+                 "Talk to yourself in the mirror.",
+                 "If you were a biker, what would your biker nickname be?",
+                 "If you were invisible for a day, what would you do?",
+                 "Wear your underwear over your head for the entire game.",
+                 "Pretending like you are in front of your crush.",
+                 "Go out and say I love you to the first person you meet.",
+                 "Go on the road and stop a car by dancing.",
+                 "Nachos. What would you put on yours?",
+                 "Do you ever talk to yourself in the mirror?",
+                 "Have you ever looked in the mirror and winked at yourself?",
+                 "Have you ever pretended to be a woman?",
+                 "Text the first person, who is live on Facebook with Hi. And reply with just Hi, 10 times.",
+                 "For the next 5 minutes, act as if you are a Dog.",
+                 "Take a selfie and upload it now, without any filters.",
+                 "Make the first five emoji faces that you have used recently.",
+                 "Get on your knees, till your turn.",
+                 "Like every post of the person, you get to see the first on Facebook.",
+                 "How many selfies do you take a day?",
+                 "Rate everyone here you love the most, from 1 to 10.",
+                 "If there were a food that you absolutely couldn’t give up, what would it be?",
+                 "How often do you pee in the shower?",
+                 "OR if you could make any animal your pet, what would it be and why?",
+                 "We want to see what you have in your purse.",
+                 "Sing like you are an opera singer.",
+                 "If you could legally change your middle name, what would it be?",
+                 "Share your feelings you have while it’s love at first sight.",
+                 "If you were a cartoon character, who would you be?",
+                 "Call an old friend of yours and tell him/her that they were your first crush.",
+                 "Do you want to?",
+                 "Suggestions for each person here, for their personality and behavior.",
+                 "Call home and inform your family that you are married now.",
+                 "Things that make you feel proud of yourself.",
+                 "If you made up an ice cream flavor, what would be in it?",
+                 "Have you ever watched really terrible children’s television just because you were bored?",
+                 "Do the 40 Pushups.",
+                 "Pick up anything from here and eat it seductively.",
+                 "Definition of a perfect partner from your viewpoints.",
+                 "Have you ever tried walking in heels?",
+                 "Have you ever been kicked out of a public place?",
+                 "Color your front two teeth with two different colors.",
+                 "Tell your mobile password.",
+                 "If you had a really fluffy bunny, what would you name it?",
+                 "Name three random things. Just do it!",
+                 "Give us a demo of what you have a plan to propose.",
+                 "Keep slapping your self till your turn.",
+                 "Just “Unfriend” that one, you are talking most these days.",
+                 "Sing and dance like you go mad.",
+                 "Give the name of the person, you want to lock in the bathroom.",
+                 "Eat ice cream with tomato sauce.",
+                 "We want you to sing for us, in an evil voice.",
+                 "Shows us your recent search history.",
+                 "Name of the school teacher you secretly liked in our school days.",
+                 "Share your first job experience with us.",
+                 "Change your relationship status from Relationship to single, and vice versa.",
+                 "Do you know how to spell antidisestablishmentarianism?",
+                 "Just ask for a cup of sugar, from your neighbor.",
+                 "Have you ever been streaking?",
+                 "We are hungry. So just order pizza for us.",
+                 "Call the waiter and sing a romantic song for him.",
+                 "Finish this statement: “Look out! It’s a _____!”",
+                 "Do you want to?",
+                 "Go and just hug a tree, till your neighbor notices you.",
+                 "Call the 18th contact number in your phonebook, and wish Happy birthday.",
+                 "Dance with the mop.",
+                 "Take a selfie with the person next to you and post with an emotional caption.",
+                 "Talk continuously without pause.",
+                 "Have you ever put on makeup?",
+                 "Say alphabets, But in Reverse.",
+                 "Pluck three of your nose hair.",
+                 "If you could give your bunny a super power of some kind, what would it be?",
+                 "Do you call your muscles “guns?”",
+                 "That fear from the current relationship, you hide inside.",
+                 "Did it work?",
+                 "OR if you could become any animal, what would it be and why?",
+                 "Do you delete them or keep them?",
+                 "Kill, screw, or marry: Miss Piggy, the flying dog from Never Ending Story, or Tweetie bird?",
+                 "Ask for Indian food at a Chinese restaurant.",
+                 "If you had a pet unicorn, what would you name it?",
+                 "If you could do any kind of magic, what kind of magic would you do?",
+                 "Describe the best things of everyone present here.",
+                 "Share your awkward project presentation again.",
+                 "Just go and talk to your crush.",
+                 "Show us how you cry alone.",
+                 "Act like a goat, learning alphabets",
+                 "Time to headstand for 2 minutes.",
+                 "Tell us about the last dream you can remember. Don’t leave any details out!",
+                 "Have you ever lied on your resume to get a job?",
+                 "What is one thing you are always losing?",
+                 "What was your favorite childhood toy?",
+                 "Have you ever told a secret after you were told not to?",
+                 "What is your favorite snack from a vending machine?",
+                 "What was the most embarrassing thing that you ever did while on a date?",
+                 "What was the worst gift you ever received?",
+                 "Are you always on time, or are you always late?",
+                 "What is your guilty pleasure?",
+                 "Do you prefer the big city or country life?",
+                 "Tell us about the worst restaurant experience you ever had.",
+                 "What is your worst habit?",
+                 "What is the one thing you really like about yourself?",
+                 "Do you have a bucket list? If so, what is one thing on that list?",
+                 "Have you ever told someone you wouldn’t be home just so they wouldn’t come over to yours?",
+                 "Have you ever taken a drink straight out of the carton?",
+                 "If you were granted three wishes, what would they be?",
+                 "What was the worst vacation you ever had?",
+                 "Do you prefer the beach or the mountains?",
+                 "What is one thing you did as a child that you still enjoy?",
+                 "Have you ever kept a library book?",
+                 "What is the angriest you’ve ever been?",
+                 "Have you ever sent an inappropriate text to your mom or dad by accident?",
+                 "Where is your favorite vacation spot?",
+                 "What was the one thing you could never learn how to do no matter how hard you tried?",
+                 "If you were given a million dollars, what would you do with it?",
+                 "What is your favorite ride at the amusement park?",
+                 "Knowing now what you didn’t know then, what would you have done differently?",
+                 "Say the funniest joke you’ve ever heard.",
+                 "If you could do one thing you did when you were a child, what would it be?",
+                 "What is the best thing you ever bought?",
+                 "Have you ever used a work computer for personal use?",
+                 "Have you ever been stuck in an elevator and if so who were you with?",
+                 "Have you ever bought something to wear to an event and then returned it to the store when the event was over?",
+                 "Have you ever been on a train?",
+                 "Have you ever forgotten a special person’s birthday?",
+                 "If you could hire someone to do one thing for you, what would it be?",
+                 "Did you ever break up with someone just before a public holiday so that you didn’t have to buy them a gift?",
+                 "Is there anything you regret buying, and if so, what is it?",
+                 "If you could create your own job title, what would it be?",
+                 "If you were to bury a time capsule, what is one thing you would put in it?",
+                 "Have you ever played tennis?",
+                 "What is the one thing you would stand in line for?",
+                 "If you could choose a different career, what would it be and why?",
+                 "What is your favorite ice cream flavor?",
+                 "Did you ever sneak into an adult movie when you were underage?",
+                 "If animals could talk, which one would you have a conversation with?",
+                 "The last time you argued with someone, did you apologize first or was it the other person?",
+                 "What is your least favorite household chore?",
+                 "If you had a remote control that would operate anything, what would you control?",
+                 "What is one job you would never want to do?",
+                 "If you were invisible what is something you would do?",
+                 "Who was your favorite teacher in school?",
+                 "Is there any movie that always makes you cry?",
+                 "What was your favorite childhood television show?",
+                 "What is the strangest thing you have ever bought?",
+                 "What is your favorite holiday?",
+                 "What is something you most look forward to doing when you retire?",
+                 "Have you ever fallen asleep in church?",
+                 "What is your favorite thing to do with your leisure time?",
+                 "If you were a giant, what would you like to do?",
+                 "On a scale from 1-10, where does your patience fall?",
+                 "Have you ever been golfing?",
+                 "What is something you find absolutely disgusting to the point you get sick?",
+                 "What is the most embarrassing thing that has happened to you in front of a crowd?",
+                 "If there was one thing you could change about yourself, what would it be?",
+                 "If you found a large amount of money, would you keep it or would you try to find the owner?",
+                 "Is there any food that you can never eat?",
+                 "What is something that you are not looking forward to?",
+                 "What is the one thing you dislike about yourself?",
+                 "Have you ever been on an airplane and if so where were you going?",
+                 "Have you ever danced on a table when you were drunk?",
+                 "What is your biggest pet peeve?",
+                 "What is your favorite sandwich?",
+                 "Do you have a weird collection? If so, what?",
+                 "Have you ever cheated on a test?",
+                 "What is your excuse to get out of exercising?",
+                 "When you think that no one is listening, do you sing in the shower?",
+                 "What was your favorite subject in school?",
+                 "Do you prefer cats, dogs, or neither?",
+                 "What are your favorite pizza toppings?",
+                 "What makes you feel uncomfortable?",
+                 "What is the one thing you are the most afraid of?",
+                 "What is your favorite sport?",
+                 "What makes you the happiest?",
+                 "What is your favorite movie that you secretly know is actually terrible?",
+                 "Have you ever shared chewing gum with anyone?",
+                 "Have you ever lied about being sick so you could stay home from work or school?",
+                 "Have you ever been arrested?",
+                 "If you could live anywhere in the world, where would it be?",
+                 "What is your favorite music genre?",
+                 "Have you ever bribed or flirted with a police officer to get out of a ticket?",
+                 "What is the best gift you ever received?",
+                 "Are you a morning person or a night person?",
+                 "What is your least favorite part about family gatherings?",
+                 "Have you ever complained about something at a restaurant just to get out of paying?",
+                 "If anyone in your family could win an award for being the most annoying, who would it be?",
+                 "What is the biggest secret that you kept from your parents when you were growing up?",
+                 "What’s your biggest fear?",
+                 "What’s the worst thing you’ve ever done?",
+                 "What’s your biggest insecurity?",
+                 "Would you rather have sex with [insert name] in secret or not have sex with that person but everyone thinks you did?",
+                 "Would you rather be caught picking your nose or picking a wedgie?",
+                 "What’s the worst thing you’ve ever said to anyone?",
+                 "When was the last time you brushed your teeth?",
+                 "What’s the drunkest you’ve ever been?",
+                 "What’s the strangest dream you’ve had?",
+                 "Who do you like the least in this room and why?",
+                 "What’s your worst habit?",
+                 "When was the last time you cried?",
+                 "Who is your favorite person in you immediate family?",
+                 "Would you rather lose your sex organs forever or gain 200 pounds only in your stomach?",
+                 "What’s the first thing you would do if you woke up one day as the opposite sex?",
+                 "Why did your last relationship break down?",
+                 "Would you date your high school crush today?",
+                 "Who is the sexiest person in this room?",
+                 "What’s the most disgusting thing you’ve ever done?",
+                 "Who is one person you pretend to like, but actually don’t?",
+                 "What’s the biggest misconception about you?",
+                 "Who would you like to kiss in this room?",
+                 "Would you trade your sibling in for a million dollars if there were no other consequences?",
+                 "What’s your biggest regret?",
+                 "What’s the biggest mistake you’ve ever made?",
+                 "What’s the longest time you’ve stayed in the bathroom, and why did you stay for that long?",
+                 "When was the last time you lied?",
+                 "Who are you secretly attracted to?",
+                 "What, if any, sport do you absolutely hate against popular opinion?",
+                 "Who in this room would be the worst person to date? Why?",
+                 "Would you choose to save 100 people without anyone knowing about it or not save them but have everyone praise you for it?",
+                 "What’s the worst date you’ve been on?",
+                 "What’s a secret you’ve never told anyone?",
+                 "What’s the worst thing anyone’s ever done to you?",
+                 "Would you rather live with no internet or no A/C or heating?",
+                 "Would you have voted for or against Trump?",
+                 "What’s the most embarrassing thing you’ve ever done?",
+                 "You’re in a public restroom and just pooped, then you realized your stall has no toilet paper. What do you do?",
+                 "What’s the worst intimate experience you’ve ever had?",
+                 "When was the last time you wet the bed?",
+                 "What’s your biggest fantasy?",
+                 "Who do you think is the worst dressed person in this room?",
+                 "What’s the most trouble you’ve been in?",
+                 "Would you trade in your dog for a million dollars?",
+                 "What’s the most unflattering school picture of you?",
+                 "Would you wear your shirt inside out for a whole day if someone paid you 1000RS?",
+                 "Who was your first celebrity crush?",
+                 "What’s something you’re glad your mum doesn’t know about you?",
+                 "Where’s the weirdest place you’ve had sex?",
                  "Have you ever liked anyone? How long?",
                  "If you can or if you want, which gc/outside gc would you make friends with? (maybe different/same type)",
                  "apa ketakutan terbesar kamu?",
@@ -3943,7 +5690,7 @@ case 'truth':
                  "Mention the incident that makes you hurt that you still remember",
                  "what achievements have you got this year?",
                  "what was your worst habit at school?",
-                 "do you love the bot creator Fantox?",
+                 "do you love the bot creator Zeeshan?",
                  "have you ever thought of taking revenge from ur teacher?",
                  "do you like current prime minister of ur country",
                  "you non veg or veg",
@@ -3964,7 +5711,7 @@ case 'truth':
                  "do you play pubg, if you then send ur id number"
              ]
                            const mikutruthww = truth[Math.floor(Math.random() * truth.length)]
-                           buffer = await getBuffer(`https://wallpapercave.com/wp/wp10524609.jpg`)
+                           buffer = await getBuffer(`https://source.unsplash.com/720x600/?sex`)
                            Miku.sendMessage(from, { image: buffer, caption: '*You have chosen Truth*\n'+ mikutruthww }, {quoted:m})
                            break
 
@@ -4220,32 +5967,6 @@ reply(mess.waiting)
                     return('Error!')
                 })
 break
-
-
-
-case 'crossplay': case 'crosplay': case 'cosplay':
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
-    if (!m.isGroup) return replay(mess.grouponly)
-                const buttons = [
-        {buttonId: '-crossplay', buttonText: {displayText: '>>'}, type: 1},
-            ]               
-        const cosplybutton = {
-        image: {url: 'https://hanzz-web.herokuapp.com/api/randomimage/cosplay'},
-        caption: "Guess who am i...",
-        footer: `${global.BotName}`,
-        buttons: buttons,
-        headerType: 4
-        }
-                  
-        await Miku.sendMessage(m.chat,cosplybutton, { quoted:m }).catch(err => {
-            return('Error!')
-        })  
-
-        break
-
-
-
 
 case 'neko2':
     if (isBan) return reply(mess.banned)	 			
@@ -4809,6 +6530,44 @@ teks += `${res.quotes}\n`
 replay(teks)
 break
 
+      case "fact":
+        {
+          await axios
+            .get(`https://nekos.life/api/v2/fact`)
+            .then((response) => {
+              const tet = `*Fact:* ${response.data.fact}\n\n*𝑷𝒐𝒘𝒆𝒓𝒆𝒅 𝒃𝒚 ${LangG.title} 𝐌𝐝*`;
+              miku.sendMessage(
+                from,
+                {
+                  image: {
+                    url: picsecktor,
+                  },
+                  caption: tet,
+                  footer: LangG.footer,
+                  templateButtons: [
+                    {
+                      urlButton: {
+                        displayText: "⭐𝐖𝐞𝐛",
+                        url: "https://citel.vercel.app",
+                      },
+                    },
+                  ],
+                },
+                {
+                  quoted: m,
+                }
+              );
+            })
+            .catch((err) => {
+              m.reply(`✖  An error occurred.`);
+            })
+
+            .catch((err) => {
+              m.reply(`Uhh,Got an Error ✖.`);
+            });
+        }
+         break;		
+		
 case "darkjoke":
     if (isBan) return reply(mess.banned)	 			
     if (isBanChat) return reply(mess.bangc)
@@ -4856,99 +6615,465 @@ replay('Broadcast Sent !')
 }
 break    
 
-
 case 'help': case 'h': case 'menu': case 'allmenu': case 'listmenu':{
     if (isBan) return reply(mess.banned)	 			
     if (isBanChat) return reply(mess.bangc)
-      
+Miku.sendMessage(from, { react: { text: `${global.reactmoji}`, key: m.key }})    
+	
  const helpmenu = `Konichiwa *${pushname}* Senpai,
 
-I am *Miku Nakano*, a bot developed by *Fantox*.
+I am *Miku Nakano*, a bot developed by *Zeeshan*.
+
+Here is the guide of making your own Bot on your own number :) 
+
+Kindly subscribe
+https://www.youtube.com/watch?v=GTJ6VcHm0Jo
+
+https://www.youtube.com/watch?v=GTJ6VcHm0Jo
 
 🔰 My prefix is:  ${prefix}
 
 Here's the list of my Commands.
  
-
-
- *━━━━━━〈  🎆 Core 🎆  〉━━━━━━*
-
-stalk, profile, help, delete, deleteall, listgc, listpc, welcome, support, repo, script 
  
- *━━━━━━〈  🎀 Owner 🎀  〉━━━━━━*
+╔════⧫🧧𝑪𝒐𝒓𝒆🧧
+║
+║ -profile
+║ -help
+║ -delete
+║ -listgc
+║ -listpc
+║ -support
+║ -repo
+║ -script
+║
+╚════════════╝ 
 
-self, public, ban, bangroup, bye, join, bye, block, unblock, broadcast 
+╔════⧫🎀𝑶𝒘𝒏𝒆𝒓🎀
+║
+║ -self
+║ -public
+║ -ban
+║ -bangroup
+║ -bye
+║ -join
+║ -block
+║ -unblock
+║ -broadcast
+║
+╚════════════╝
 
- *━━━━━━〈  ⭕ Group ⭕  〉━━━━━━*
+╔════⧫👥𝑮𝒓𝒐𝒖𝒑👥
+║
+║ -promote
+║ -demote
+║ -revoke
+║ -add
+║ -remove
+║ -tagall
+║ -hidetag
+║ -groupsetting
+║ -grouplink
+║ -setgcpp
+║ -setname
+║ -setdesc
+║ -group
+║ -nsfw
+║ -welcome
+║
+╚════════════╝
 
-promote, demote, revoke, remove, tagall, hidetag, groupsetting, grouplink, setgcpp, setname, setdesc, group, nsfw 
+╔════⧫⛓️𝑨𝒏𝒕𝒊 𝑳𝒊𝒏𝒌⛓️
+║
+║ -antilinkgc
+║ -antilinktg
+║ -antilinktt
+║ -antilinkytch
+║ -antilinkytvid
+║ -antilinkig
+║ -antilinkfb
+║ -antilinktwit
+║ -antilinkall
+║ -antiwame
+║
+╚════════════╝
 
- *━━━━━━〈  ➰ Anti Link ➰  〉━━━━━━*
+╔════⧫🔎𝑺𝒆𝒂𝒓𝒄𝒉🔍
+║
+║ -play
+║ -song
+║ -yts
+║ -lyrics
+║ -google
+║ -playstore
+║ -gimage
+║ -pinterest
+║ -image
+║ -movie
+║ -wallpaper
+║ -searchgc
+║ -happymod
+║ -wikimedia
+║ -ringtone
+║ -anime
+║ -animestory
+║ -manga
+║
+╚════════════╝
+
+╔════⧫⚙️𝑪𝒐𝒏𝒗𝒆𝒓𝒕⚙️
+║
+║ -sticker
+║ -toimg
+║ -tovideo
+║ -togif
+║ -steal
+║ -stickermeme
+║ -emojimix
+║ -tourl
+║ -tomp3
+║ -toaudio
+║
+╚════════════╝
+
+╔════⧫🔉𝑨𝒖𝒅𝒊𝒐🔉
+║
+║ -bass
+║ -tempo
+║ -blown
+║ -deep
+║ -earrape
+║ -fast
+║ -fat
+║ -nightcore
+║ -reverse
+║ -robot
+║ -slow
+║ -squirrel
+║
+╚════════════╝
+
+╔════⧫💥𝑹𝒆𝒂𝒄𝒕𝒊𝒐𝒏𝒔💥
+║
+║ -bonk
+║ -cry
+║ -bully
+║ -cuddle
+║ -hug
+║ -kiss
+║ -lick
+║ -pat
+║ -smug
+║ -yeet
+║ -blush
+║ -smile
+║ -wave
+║ -highfive
+║ -handhold
+║ -nom
+║ -glomp
+║ -bite
+║ -slap
+║ -kill
+║ -happy
+║ -wink
+║ -poke
+║ -dance
+║ -cringe
+║
+╚════════════╝
+
+╠═══════✪「 MAKER 」
+╠${prefix}candy
+╠${prefix}blackpinkneon
+╠${prefix}deepsea
+╠${prefix}scifi
+╠${prefix}fiction
+╠${prefix}berry
+╠${prefix}fruitjuice
+╠${prefix}biscuit
+╠${prefix}wood
+╠${prefix}chocolate
+╠${prefix}matrix
+╠${prefix}blood
+╠${prefix}halloween
+╠${prefix}wicker
+╠${prefix}darkgold
+╠${prefix}firework
+╠${prefix}skeleton
+╠${prefix}sand
+╠${prefix}glue
+╠${prefix}leaves
+╠${prefix}magma
+╠${prefix}lava
+╠${prefix}rock
+╠${prefix}bloodglas
+╠${prefix}underwater
+╠${prefix}textmaker
+╠${prefix}honey
+╠${prefix}ice
+╠${prefix}watercolor
+╠${prefix}multicolor
+╠${prefix}snow
+╠${prefix}harrypot
+╠${prefix}harrypotter
+╠${prefix}brokenglass
+╠${prefix}waterpipe
+╠${prefix}spooky
+╠${prefix}circuit
+╠${prefix}metallic
+╠${prefix}demon
+╠${prefix}sparklechristmas
+╠${prefix}christmas
+╠${prefix}3dchristmas
+╠${prefix}3dbox
+╠${prefix}waterdrop
+╠${prefix}lion2
+╠${prefix}papercut
+╠${prefix}transformer
+╠${prefix}neondevil
+╠${prefix}3davengers
+╠${prefix}3dstone
+╠${prefix}3dstone2
+╠${prefix}summertime
+╠${prefix}thunder
+╠${prefix}window
+╠${prefix}graffiti
+╠${prefix}graffitibike
+╠${prefix}pornhub
+╠${prefix}glitch
+╠${prefix}blackpink
+╠${prefix}glitch2
+╠${prefix}glitch3
+╠${prefix}3dspace
+╠${prefix}lion
+╠${prefix}3dneon
+╠${prefix}greenneon
+╠${prefix}bokeh
+╠${prefix}holographic
+╠${prefix}bear
+╠${prefix}wolf
+╠${prefix}joker
+╠${prefix}dropwater
+╠${prefix}dropwater2
+╠${prefix}thewall
+╠${prefix}neonlight
+╠${prefix}natural
+╠${prefix}carbon
+╠${prefix}pencil
+╠${prefix}blackpink2
+╠${prefix}neon
+╠${prefix}neonlight2
+╠${prefix}toxic
+╠${prefix}strawberry
+╠${prefix}discovery
+╠${prefix}1917
+╠ ${prefix}sci_fi
+╠ ${prefix}ancient
+╠ ${prefix}fabric
+╠ ${prefix}hoorror
+╠ ${prefix}whitebear
+╠ ${prefix}juice
+╠ ${prefix}batman
+╠ ${prefix}multicolor
+╠ ${prefix}collwall
+╠ ${prefix}wonderful
+╠ ${prefix}cool
+╠ ${prefix}sketch
+╠ ${prefix}marvel
+╠ ${prefix}foggy
+╠ ${prefix}writing
+╠ ${prefix}halloweenfire
+╠ ${prefix}halloween
+╠ ${prefix}watercolor
+╠ ${prefix}classic
+╚════════════╝
+╔════⧫📥 *BACKCHODI* 📥 
+║ -foolish 
+║ -smart 
+║ -idiot 
+║ -gay 
+║ -lesbi 
+║ -bastard 
+║ -stubble 
+║ -dog 
+║ -fuck 
+║ -ape 
+║ -noob 
+║ -great 
+║ -horny 
+║ -wibu 
+║ -asshole 
+║ -handsome 
+║ -beautiful 
+║ -cute 
+║ -kind 
+║ -ugly 
+║ -pretty 
+║ -lesbian 
+║ -randi 
+║ -gandu 
+║ -madarchod 
+║ -kala 
+║ -gora 
+║ -chutiya 
+║ -nibba 
+║ -nibbi 
+║ -bhosdiwala 
+║ -chutmarika 
+║ -bokachoda 
+║ -suarerbaccha 
+║ -bolochoda 
+║ -muthal 
+║ -muthbaaz 
+║ -randibaaz 
+║ -topibaaz 
+║ -cunt 
+║ -nerd 
+║ -behenchod 
+║ -behnchoda 
+║ -bhosdika 
+║ -nerd 
+║ -mc 
+║ -bsdk 
+║ -bhosdk 
+║ -nigger 
+║ -loda 
+║ -laund 
+║ -nigga 
+║ -noobra 
+║ -tharki 
+║ -nibba 
+║ -nibbi 
+║ -mumu 
+║ -rascal 
+║ -scumbag 
+║ -nuts 
+║ -comrade 
+║ -fagot 
+║ -scoundrel 
+║ -ditch 
+║ -dope 
+║ -gucci 
+║ -lit 
+║ -dumbass 
+║ -sexy
+║ -crackhead
+║ -mf
+║ -motherfucker
+║ -dogla
+║ -bewda
+║ -boka
+║ -khanki
+║ -bal
+║ -sucker
+║ -fuckboy
+║ -playboy
+║ -fuckgirl
+║ -playgirl
+║ -hot
+╚════════════╝
+╔════⧫📥𝑫𝒐𝒘𝒏𝒍𝒐𝒂𝒅𝒆𝒓📥
+║
+║ -play
+║ -ytmp3
+║ -ytmp4
+║ -ytvideo
+║ -mediafire
+║ -instagram
+║ -igtv
+║ -facebook
+║ -fbmp3
+║ -twitter
+║ -twittermp3
+║ -tiktok
+║ -tiktokaudio
+║ -tiktoknowm
+║
+╚════════════╝
  
-antilinkgc, antilinktg, antilinktt, antilinkytch, antilinkytvid, antilinkig, antilinkfb, antilinktwit, antilinkall, antiwame
-
- *━━━━━━〈  🔍 Search 🔍  〉━━━━━━*
-
-play, song, yts, lyrics, google, gimage, pinterest, image, movie, wallpaper, searchgc, happymod, wikimedia, ringtone, anime, animestory, manga, ringtone   
-
- *━━━━━━〈  🔰 Convert 🔰  〉━━━━━━*
-
-sticker, toimg, tovideo, togif , steal, stickermeme, emojimix, tourl, tomp3, toaudio
-
- *━━━━━━〈  🔉 Audio 🔉  〉━━━━━━*
-
-bass, tempo, blown, deep, earrape, fast, fat, nightcore, reverse, robot, slow, squirrel
-
- *━━━━━━〈  📍 Reactions 📍  〉━━━━━━*
-
-bonk, cry, bully, cuddle, hug, kiss, lick, pat, smug, yeet, blush, smile, wave, highfive, handhold, nom, glomp, bite, slap, kill, happy, wink, poke, dance, cringe
-
- *━━━━━━〈  🌌 Downloader 🌌  〉━━━━━━*
-
-play, ytmp3, ytmp4, ytvideo, mediafire, instagram, igtv, facebook, fbmp3, twitter, twittermp3, tiktok, tiktokaudio, tiktoknowm, mediafire  
-
- *━━━━━━〈  🈴 Weeb 🈴  〉━━━━━━*
-
-crosplay, waifu, loli, neko, ppcouple, feed, foxgirl, feed, meow, tickle, wallpaper, coffee, animenom, waifu3, neko2, feed, meow, tickle, migumin, awoo, animewallpaper2, anime, manga
-
- *━━━━━━〈  ♨️ Informative ♨️  〉━━━━━━*
-
-animequote, quote, covid, earthquake, wiki
-
- *━━━━━━〈  🎗 Others 🎗  〉━━━━━━*
-
-stickermeme, quotes, darkjoke 
-
- *━━━━━━〈  🎐 Fun 🎐  〉━━━━━━*
-
-reaction, truth, dare, couple, soulmate, handsomecheck, beautifulcheck, awesomecheck, greatcheck, gaycheck, cutecheck, lesbiancheck, hornycheck, prettycheck, lovelycheck, uglycheck, charactercheck
-
- *━━━━━━〈  🪁 Essentials 🪁  〉━━━━━━*
-
-translate, fliptext, toletter
-
- *━━━━━━〈  💥 NSFW 💥  〉━━━━━━*
-
+╔════⧫☄️𝑾𝒆𝒆𝒃☄️
+║
+║ -waifu
+║ -loli
+║ -neko
+║ -ppcouple
+║ -feed
+║ -foxgirl
+║ -meow
+║ -tickle
+║ -wallpaper
+║ -coffee
+║ -animenom
+║ -waifu3
+║ -neko2
+║ -migumin
+║ -awoo
+║ -anime
+║ -animewallpaper2
+║ -manga
+║
+╚════════════╝
+ 
+╔════⧫📣𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒗𝒆📣
+║
+║ -animequote
+║ -quote
+║ -covid
+║ -earthquake
+║ -wiki
+║
+╚════════════╝
+ 
+╔════⧫🦋𝑭𝒖𝒏🦋
+║
+║ -reaction
+║ -truth
+║ -dare
+║ -couple
+║ -soulmate
+║ -handsomecheck
+║ -beautifulcheck
+║ -awesomecheck
+║ -greatcheck
+║ -gaycheck
+║ -cutecheck
+║ -lesbiancheck
+║ -hornycheck
+║ -prettycheck
+║ -lovelycheck
+║ -uglycheck
+║ -charactercheck
+║ -quotes
+║ -darkjoke
+║ -stickermeme
+║
+╚════════════╝
+ 
+╔════⧫🐬𝑬𝒔𝒔𝒆𝒏𝒕𝒊𝒂𝒍/𝑶𝒕𝒉𝒆𝒓𝒔🐬
+║
+║ -translate
+║ -fliptext
+║ -toletter
+║
+╚════════════╝
+ 
 🍁 Type " *${prefix}nsfw* " then enable NSFW (Admin only!) 
-
 🍁 Then type " *${prefix}nsfwmenu* " to get full list of NSFW commands.
 
 
 
-
-
  『  *${global.BotName}*  』
- Powered by: *Fantox*
-
+ Powered by: *Zeeshan*
+ 
  🔰 To use any of these commands type 
  " *${prefix}<Command name>* ".
  
  🔰 To get Support Group link type " *${prefix}support* ".
-
  🔰 Type " *${prefix}help* " to get full command list.`
-     
- let buttonshelpm = [
-    {buttonId: `-owner`, buttonText: {displayText: 'Bot Owner'}, type: 1}
+ 
+      let buttonshelpm = [
+{ quickReplyButton: { displayText: `Owner 🤣`, id: 'owner'} }
     ]
                 let buttonMessage = {
                     file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku2.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
@@ -4970,14 +7095,14 @@ case '':
 
       mikupic ='https://wallpapercave.com/wp/wp10524580.jpg'
     
-        
+	    
  const needhelpmenu = `Do you need help ${pushname} Senpai? Type *${prefix}help* to get my full command list.`
      
          let butRun = [
-                {buttonId: `-help`, buttonText: {displayText: 'Help'}, type: 1}
+                {buttonId: `-owner`, buttonText: {displayText: 'owner'}, type: 1}
                 ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku.mp4'),gifPlayback:true,caption:needhelpmenu},{quoted:m}),
+                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/tharkiedits.mp4'),gifPlayback:true,caption:needhelpmenu},{quoted:m}),
                     caption: needhelpmenu,
                     footer: `${global.BotName}`,
                     buttons: butRun,
@@ -4988,8 +7113,6 @@ case '':
 break
 
 
-
-
 default:
 
 /*
@@ -4998,26 +7121,22 @@ default:
        txt = `${botreply.data.cnt}`
        m.reply(txt)
 
-
-
-await axios.get(`http://api.brainshop.ai/get?bid=165801&key=1ftAuFL7Fhj21Fyp&uid=[uid]&msg=${budy}]`)
-.then((response) => {
-        txt = `${response.data.cnt}`
-
-       m.reply(txt);http://api.brainshop.ai/get?bid=168758&key=Ci7eNhtxpxxDB5FQ&uid=[uid]&msg=[msg]
   }
 
 */
 
-  if (!isCmd && !m.isGroup){
-    const botreply = await axios.get(`http://api.brainshop.ai/get?bid=168758&key=Ci7eNhtxpxxDB5FQ&uid=[uid]&msg=[${budy}]`)
-    txt = `${botreply.data.cnt}`
-    m.reply(txt)
-    }
+  if (!isCmd&&!isGroup){
+    await axios.get(`http://api.brainshop.ai/get?bid=165801&key=1ftAuFL7Fhj21Fyp&uid=[uid]&msg=${budy}]`)
+.then((response) => {
+        txt = `${response.data.cnt}`
+
+       m.reply(txt);
+
+    })
+}
 
 
 
-    
 if (budy.startsWith('=>')) {
 if (!isCreator) return reply(mess.botowner)
 function Return(sul) {
@@ -5064,7 +7183,7 @@ if (!(budy.toLowerCase() in msgs)) return
 Miku.copyNForward(m.chat, msgs[budy.toLowerCase()], true)
 }
 }
-}catch (err) {
+} catch (err) {
 Miku.sendMessage(`${ownertag}@s.whatsapp.net`, util.format(err), {quoted:m})
 console.log(err)
 }
