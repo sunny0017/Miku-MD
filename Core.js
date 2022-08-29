@@ -6568,7 +6568,7 @@ Here's the list of my Commands.
 ║ -anime
 ║ -animewallpaper2
 ║ -manga
-║
+║ -crossplay
 ╚════════════╝
  
 ╔════⧫📣𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒗𝒆📣
