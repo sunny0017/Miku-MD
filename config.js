@@ -7,15 +7,19 @@ global.autoReadAll = false
 global.antitags = true
 
 
-global.Owner = ['918101187835']
-global.OwnerNumber = ['918101187835']
-global.ownertag = ['918101187835']
+global.Owner = ['919166253375']
+global.OwnerNumber = ['919166253375']
+global.ownertag = ['919166253375']
 global.BotName = "Miku"
+global.websitex = "https://youtu.be/WiIqCdiDjFo" //ur website to be displayed
 global.packname = "Miku bot"
-global.author = "By: Fantox"
-global.OwnerName = "Fantox"
-global.BotSourceCode = "https://github.com/FantoX001/Miku-MD"
-global.SupportGroupLink = "https://chat.whatsapp.com/JcBzjRIxM5UHfuJbt0KrWt"
+global.myweb = 'https://youtu.be/WiIqCdiDjFo'
+global.author = "By: Zeeshan"
+global.ownername = "🦄Zeeshan Malik" //ur owner name
+global.OwnerName = "Zeeshan"
+global.reactmoji = "😘" //ur menu react emoji
+global.BotSourceCode = "https://www.youtube.com/watch?v=GTJ6VcHm0Jo"
+global.SupportGroupLink = "https://www.youtube.com/watch?v=GTJ6VcHm0Jo"
 global.sessionName = "session"
 
 // Prefix //
@@ -23,7 +27,7 @@ global.sessionName = "session"
 global.prefa = ['-'] 
 
 
-global.location = "West Bengal, India"
+global.location = "Delhi, India"
 global.reactmoji = "❤️"
 global.themeemoji = "💖"
 global.vidmenu = { url: 'https://c.tenor.com/YGuLegQWubwAAAPo/miku-nakano-gotoubun-no-hanayome.mp4' }
@@ -59,18 +63,18 @@ global.ntilink = []
 
 global.mess = {
     jobdone: 'Job done...',
-    useradmin: 'Sorry, only *Group Admins* can use this command *Baka*!',
-    botadmin: 'Sorry, i cant execute this command without being an *Admin* of this group.',
-    botowner: 'Only my *Owner* can use this command, Baka!',
+    useradmin: 'Abey Chutiye Sirf Group Admin Use Kr Sakte Hai Ye Command *Baka*!',
+    botadmin: 'Abey oo pagalo ke sardar bina *Admin* Bane Kese Process Karu Ye Command *Admin* Bana Pehle',
+    botowner: 'Sirf Mere Maalik Mere Aaka Zeeshan sahab (bot dev.) hi use kar sakte hai ye command ab -owner command de',
     grouponly: 'This command is only made for *Groups*, Baka!',
     privateonly: 'This command is only made for *Private Chat*, Baka!',
     botonly: 'Only the *Bot itself* can use this command!',
-    waiting: 'Chotto Matte...',
-    nolink: 'Please provide me *link*, Baka!',
+    waiting: 'Ruk ab do mint...',
+    nolink: 'Abey Chutiye *Link* To De!',
     error: 'An error occurd!',
     banned: 'You are *Banned* fron using commands!',
     bangc: 'This Group is *Banned* from using Commands!',
-    nonsfw: 'Dont be a pervert Baka! This is not a NSFW enabled group!'
+    nonsfw: 'Dont be a pervert Baka! This is not a NSFW enabled group! Abey padhai likhai karo IAS YAS bano, Lekin nahi tumhe to pervert banna hai bc'
     
 }
 
