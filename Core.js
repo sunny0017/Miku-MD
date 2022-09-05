@@ -6295,7 +6295,7 @@ case '':
  const needhelpmenu = `Do you need help ${pushname} Senpai? Type *${prefix}help* to get my full command list.`
      
          let butRun = [
-                {buttonId: `-Owner`, buttonText: {displayText: 'Bot Owner'}, type: 1},{"urlButton": {"displayText": "YouTube 📍","url": `${websitex}`}}
+                {buttonId: `-Owner`, buttonText: {displayText: 'Bot Owner'}, type: 1},{buttonId: `-help`, buttonText: {displayText: 'Bot Menu'}, type: 1}
                 ]
                 let buttonMessage = {
                     video:fs.readFileSync('./system/tharkiedits.mp4'),gifPlayback:true,
