@@ -6192,433 +6192,98 @@ https://www.youtube.com/watch?v=GTJ6VcHm0Jo
 Here's the list of my Commands.
  
  
-╔════⧫🧧𝑪𝒐𝒓𝒆🧧
-║
-║ -profile
-║ -help
-║ -delete
-║ -listgc
-║ -listpc
-║ -support
-║ -repo
-║ -script
-║
-╚════════════╝ 
-╔════⧫🎀𝑶𝒘𝒏𝒆𝒓🎀
-║
-║ -self
-║ -public
-║ -ban
-║ -bangroup
-║ -bye
-║ -join
-║ -block
-║ -unblock
-║ -broadcast
-║
-╚════════════╝
-╔════⧫👥𝑮𝒓𝒐𝒖𝒑👥
-║
-║ -promote
-║ -demote
-║ -revoke
-║ -add
-║ -remove
-║ -tagall
-║ -hidetag
-║ -groupsetting
-║ -grouplink
-║ -setgcpp
-║ -setname
-║ -setdesc
-║ -group
-║ -nsfw
-║ -welcome
-║
-╚════════════╝
-╔════⧫⛓️𝑨𝒏𝒕𝒊 𝑳𝒊𝒏𝒌⛓️
-║
-║ -antilinkgc
-║ -antilinktg
-║ -antilinktt
-║ -antilinkytch
-║ -antilinkytvid
-║ -antilinkig
-║ -antilinkfb
-║ -antilinktwit
-║ -antilinkall
-║ -antiwame
-║
-╚════════════╝
-╔════⧫🔎𝑺𝒆𝒂𝒓𝒄𝒉🔍
-║
-║ -play
-║ -song
-║ -yts
-║ -lyrics
-║ -google
-║ -playstore
-║ -gimage
-║ -pinterest
-║ -image
-║ -movie
-║ -wallpaper
-║ -searchgc
-║ -happymod
-║ -wikimedia
-║ -ringtone
-║ -anime
-║ -animestory
-║ -manga
-║
-╚════════════╝
-╔════⧫⚙️𝑪𝒐𝒏𝒗𝒆𝒓𝒕⚙️
-║
-║ -sticker
-║ -toimg
-║ -tovideo
-║ -togif
-║ -steal
-║ -stickermeme
-║ -emojimix
-║ -tourl
-║ -tomp3
-║ -toaudio
-║
-╚════════════╝
-╔════⧫🔉𝑨𝒖𝒅𝒊𝒐🔉
-║
-║ -bass
-║ -tempo
-║ -blown
-║ -deep
-║ -earrape
-║ -fast
-║ -fat
-║ -nightcore
-║ -reverse
-║ -robot
-║ -slow
-║ -squirrel
-║
-╚════════════╝
-╔════⧫💥𝑹𝒆𝒂𝒄𝒕𝒊𝒐𝒏𝒔💥
-║
-║ -bonk
-║ -cry
-║ -bully
-║ -cuddle
-║ -hug
-║ -kiss
-║ -lick
-║ -pat
-║ -smug
-║ -yeet
-║ -blush
-║ -smile
-║ -wave
-║ -highfive
-║ -handhold
-║ -nom
-║ -glomp
-║ -bite
-║ -slap
-║ -kill
-║ -happy
-║ -wink
-║ -poke
-║ -dance
-║ -cringe
-║
-╚════════════╝
-╠═══════✪「 MAKER 」
-╠${prefix}candy
-╠${prefix}blackpinkneon
-╠${prefix}deepsea
-╠${prefix}scifi
-╠${prefix}fiction
-╠${prefix}berry
-╠${prefix}fruitjuice
-╠${prefix}biscuit
-╠${prefix}wood
-╠${prefix}chocolate
-╠${prefix}matrix
-╠${prefix}blood
-╠${prefix}halloween
-╠${prefix}wicker
-╠${prefix}darkgold
-╠${prefix}firework
-╠${prefix}skeleton
-╠${prefix}sand
-╠${prefix}glue
-╠${prefix}leaves
-╠${prefix}magma
-╠${prefix}lava
-╠${prefix}rock
-╠${prefix}bloodglas
-╠${prefix}underwater
-╠${prefix}textmaker
-╠${prefix}honey
-╠${prefix}ice
-╠${prefix}watercolor
-╠${prefix}multicolor
-╠${prefix}snow
-╠${prefix}harrypot
-╠${prefix}harrypotter
-╠${prefix}brokenglass
-╠${prefix}waterpipe
-╠${prefix}spooky
-╠${prefix}circuit
-╠${prefix}metallic
-╠${prefix}demon
-╠${prefix}sparklechristmas
-╠${prefix}christmas
-╠${prefix}3dchristmas
-╠${prefix}3dbox
-╠${prefix}waterdrop
-╠${prefix}lion2
-╠${prefix}papercut
-╠${prefix}transformer
-╠${prefix}neondevil
-╠${prefix}3davengers
-╠${prefix}3dstone
-╠${prefix}3dstone2
-╠${prefix}summertime
-╠${prefix}thunder
-╠${prefix}window
-╠${prefix}graffiti
-╠${prefix}graffitibike
-╠${prefix}pornhub
-╠${prefix}glitch
-╠${prefix}blackpink
-╠${prefix}glitch2
-╠${prefix}glitch3
-╠${prefix}3dspace
-╠${prefix}lion
-╠${prefix}3dneon
-╠${prefix}greenneon
-╠${prefix}bokeh
-╠${prefix}holographic
-╠${prefix}bear
-╠${prefix}wolf
-╠${prefix}joker
-╠${prefix}dropwater
-╠${prefix}dropwater2
-╠${prefix}thewall
-╠${prefix}neonlight
-╠${prefix}natural
-╠${prefix}carbon
-╠${prefix}pencil
-╠${prefix}blackpink2
-╠${prefix}neon
-╠${prefix}neonlight2
-╠${prefix}toxic
-╠${prefix}strawberry
-╠${prefix}discovery
-╠${prefix}1917
-╠ ${prefix}sci_fi
-╠ ${prefix}ancient
-╠ ${prefix}fabric
-╠ ${prefix}hoorror
-╠ ${prefix}whitebear
-╠ ${prefix}juice
-╠ ${prefix}batman
-╠ ${prefix}multicolor
-╠ ${prefix}collwall
-╠ ${prefix}wonderful
-╠ ${prefix}cool
-╠ ${prefix}sketch
-╠ ${prefix}marvel
-╠ ${prefix}foggy
-╠ ${prefix}writing
-╠ ${prefix}halloweenfire
-╠ ${prefix}halloween
-╠ ${prefix}watercolor
-╠ ${prefix}classic
-╚════════════╝
-╔════⧫📥 *BACKCHODI* 📥 
-║ -foolish 
-║ -smart 
-║ -idiot 
-║ -gay 
-║ -lesbi 
-║ -bastard 
-║ -stubble 
-║ -dog 
-║ -fuck 
-║ -ape 
-║ -noob 
-║ -great 
-║ -horny 
-║ -wibu 
-║ -asshole 
-║ -handsome 
-║ -beautiful 
-║ -cute 
-║ -kind 
-║ -ugly 
-║ -pretty 
-║ -lesbian 
-║ -randi 
-║ -gandu 
-║ -madarchod 
-║ -kala 
-║ -gora 
-║ -chutiya 
-║ -nibba 
-║ -nibbi 
-║ -bhosdiwala 
-║ -chutmarika 
-║ -bokachoda 
-║ -suarerbaccha 
-║ -bolochoda 
-║ -muthal 
-║ -muthbaaz 
-║ -randibaaz 
-║ -topibaaz 
-║ -cunt 
-║ -nerd 
-║ -behenchod 
-║ -behnchoda 
-║ -bhosdika 
-║ -nerd 
-║ -mc 
-║ -bsdk 
-║ -bhosdk 
-║ -nigger 
-║ -loda 
-║ -laund 
-║ -nigga 
-║ -noobra 
-║ -tharki 
-║ -nibba 
-║ -nibbi 
-║ -mumu 
-║ -rascal 
-║ -scumbag 
-║ -nuts 
-║ -comrade 
-║ -fagot 
-║ -scoundrel 
-║ -ditch 
-║ -dope 
-║ -gucci 
-║ -lit 
-║ -dumbass 
-║ -sexy
-║ -crackhead
-║ -mf
-║ -motherfucker
-║ -dogla
-║ -bewda
-║ -boka
-║ -khanki
-║ -bal
-║ -sucker
-║ -fuckboy
-║ -playboy
-║ -fuckgirl
-║ -playgirl
-║ -hot
-╚════════════╝
-╔════⧫📥𝑫𝒐𝒘𝒏𝒍𝒐𝒂𝒅𝒆𝒓📥
-║
-║ -play
-║ -ytmp3
-║ -ytmp4
-║ -ytvideo
-║ -mediafire
-║ -instagram
-║ -igtv
-║ -facebook
-║ -fbmp3
-║ -twitter
-║ -twittermp3
-║ -tiktok
-║ -tiktokaudio
-║ -tiktoknowm
-║
-╚════════════╝
+case 'help': case 'h': case 'menu': case 'allmenu': case 'listmenu':{
+    if (isBan) return reply(mess.banned)	 			
+    if (isBanChat) return reply(mess.bangc)
+      
+ const helpmenu = `Konichiwa *${pushname}* Senpai,
+
+I am *Miku Nakano*, a bot developed by *Fantox*.
+
+🔰 My prefix is:  ${prefix}
+
+Here's the list of my Commands.
+
+
  
-╔════⧫☄️𝑾𝒆𝒆𝒃☄️
-║
-║ -waifu
-║ -loli
-║ -neko
-║ -ppcouple
-║ -feed
-║ -foxgirl
-║ -meow
-║ -tickle
-║ -wallpaper
-║ -coffee
-║ -animenom
-║ -waifu3
-║ -neko2
-║ -migumin
-║ -awoo
-║ -anime
-║ -animewallpaper2
-║ -manga
-║ -crossplay
-╚════════════╝
+ *━━━〈  🎆 Core 🎆  〉━━━*
+
+miku, stalk, profile, help, delete, deleteall, listgc, listpc, welcome, support, repo, script 
  
-╔════⧫📣𝑰𝒏𝒇𝒐𝒓𝒎𝒂𝒕𝒊𝒗𝒆📣
-║
-║ -animequote
-║ -quote
-║ -covid
-║ -earthquake
-║ -wiki
-║
-╚════════════╝
+ *━━━〈  🎀 Owner 🎀  〉━━━*
+
+self, public, ban, bangroup, bye, join, bye, block, unblock, broadcast 
+
+ *━━━〈  ⭕ Group ⭕  〉━━━*
  
-╔════⧫🦋𝑭𝒖𝒏🦋
-║
-║ -reaction
-║ -truth
-║ -dare
-║ -couple
-║ -soulmate
-║ -handsomecheck
-║ -beautifulcheck
-║ -awesomecheck
-║ -greatcheck
-║ -gaycheck
-║ -cutecheck
-║ -lesbiancheck
-║ -hornycheck
-║ -prettycheck
-║ -lovelycheck
-║ -uglycheck
-║ -charactercheck
-║ -quotes
-║ -darkjoke
-║ -stickermeme
-║
-╚════════════╝
+promote, demote, revoke, remove, tagall, hidetag, groupsetting, grouplink, setgcpp, setname, setdesc, group, nsfw 
+
+ *━━━〈  ➰ Anti Link ➰  〉━━━*
  
-╔════⧫🐬𝑬𝒔𝒔𝒆𝒏𝒕𝒊𝒂𝒍/𝑶𝒕𝒉𝒆𝒓𝒔🐬
-║
-║ -translate
-║ -fliptext
-║ -toletter
-║
-╚════════════╝
- 
+antilinkgc, antilinktg, antilinktt, antilinkytch, antilinkytvid, antilinkig, antilinkfb, antilinktwit, antilinkall, antiwame
+
+ *━━━〈  🔍 Search 🔍  〉━━━*
+
+play, song, yts, lyrics, google, gimage, pinterest, image, movie, wallpaper, searchgc, happymod, wikimedia, ringtone, anime, animestory, manga, ringtone  
+
+ *━━━〈  🔰 Convert 🔰  〉━━━*
+
+sticker, toimg, tovideo, togif , steal, stickermeme, emojimix, tourl, tomp3, toaudio
+
+ *━━━〈  🔉 Audio 🔉  〉━━━*
+
+bass, tempo, blown, deep, earrape, fast, fat, nightcore, reverse, robot, slow, squirrel
+
+ *━━━〈  📍 Reactions 📍  〉━━━*
+
+bonk, cry, bully, cuddle, hug, kiss, lick, pat, smug, yeet, blush, smile, wave, highfive, handhold, nom, glomp, bite, slap, kill, happy, wink, poke, dance, cringe
+
+ *━━━〈  🌌 Downloader 🌌  〉━━━*
+
+play, ytmp3, ytmp4, ytvideo, mediafire, instagram, igtv, facebook, fbmp3, twitter, twittermp3, tiktok, tiktokaudio, tiktoknowm, mediafire  
+
+ *━━━〈  🈴 Weeb 🈴  〉━━━*
+
+crosplay, waifu, loli, neko, ppcouple, feed, foxgirl, feed, meow, tickle, wallpaper, coffee, animenom, waifu3, neko2, feed, meow, tickle, migumin, awoo, animewallpaper2, anime, manga
+
+ *━━━〈  ♨️ Informative ♨️  〉━━━*
+
+animequote, quote, covid, earthquake, wiki
+
+ *━━━〈  🎗 Others 🎗  〉━━━*
+
+stickermeme, quotes, darkjoke 
+
+ *━━━〈  🎐 Fun 🎐  〉━━━*
+
+reaction, truth, dare, couple, soulmate, handsomecheck, beautifulcheck, awesomecheck, greatcheck, gaycheck, cutecheck, lesbiancheck, hornycheck, prettycheck, lovelycheck, uglycheck, charactercheck
+
+ *━━━〈  🪁 Essentials 🪁  〉━━━*
+
+translate, fliptext, toletter
+
+ *━━━〈  💥 NSFW 💥  〉━━━*
+
 🍁 Type " *${prefix}nsfw* " then enable NSFW (Admin only!) 
+
 🍁 Then type " *${prefix}nsfwmenu* " to get full list of NSFW commands.
+
+
+
+
  『  *${global.BotName}*  』
- Powered by: *Zeeshan*
- 
+ Powered by: *Fantox*
+
  🔰 To use any of these commands type 
  " *${prefix}<Command name>* ".
  
  🔰 To get Support Group link type " *${prefix}support* ".
+
  🔰 Type " *${prefix}help* " to get full command list.`
- 
-      let buttonshelpm = [
-{ quickReplyButton: { displayText: `Owner 🤣`, id: 'owner'} }
+    
+
+ let buttonshelpm = [
+    {buttonId: `-owner`, buttonText: {displayText: 'Bot Owner'}, type: 1}
     ]
                 let buttonMessage = {
                     video:fs.readFileSync('./system/miku2.mp4'),gifPlayback:true,
@@ -6626,14 +6291,12 @@ Here's the list of my Commands.
                     footer: `${BotName}`,
                     buttons: buttonshelpm,
                     headerType: 4
-
+                    
                 }
             Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
 break
-
-
-
+ 
 
 case '':
     if(isCmd){
@@ -6646,7 +6309,7 @@ case '':
  const needhelpmenu = `Do you need help ${pushname} Senpai? Type *${prefix}help* to get my full command list.`
      
          let butRun = [
-                {buttonId: `-help`, buttonText: {displayText: 'Help'}, type: 1}
+                {buttonId: `-Owner`, buttonText: {displayText: 'Owner'}, type: 1}
                 ]
                 let buttonMessage = {
                     video:fs.readFileSync('./system/tharkiedits.mp4'),gifPlayback:true,
@@ -6658,10 +6321,6 @@ case '':
             Miku.sendMessage(m.chat,buttonMessage,{quoted:m})
                 }
 break
-
-
-
-
 
 
     
