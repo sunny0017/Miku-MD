@@ -6192,20 +6192,7 @@ https://www.youtube.com/watch?v=GTJ6VcHm0Jo
 Here's the list of my Commands.
  
  
-case 'help': case 'h': case 'menu': case 'allmenu': case 'listmenu':{
-    if (isBan) return reply(mess.banned)	 			
-    if (isBanChat) return reply(mess.bangc)
-      
- const helpmenu = `Konichiwa *${pushname}* Senpai,
 
-I am *Miku Nakano*, a bot developed by *Fantox*.
-
-🔰 My prefix is:  ${prefix}
-
-Here's the list of my Commands.
-
-
- 
  *━━━〈  🎆 Core 🎆  〉━━━*
 
 miku, stalk, profile, help, delete, deleteall, listgc, listpc, welcome, support, repo, script 
