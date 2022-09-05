@@ -6621,15 +6621,17 @@ Here's the list of my Commands.
 { quickReplyButton: { displayText: `Owner 🤣`, id: 'owner'} }
     ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/miku2.mp4'),gifPlayback:true,caption:helpmenu},{quoted:m}),
+                    video:fs.readFileSync('./system/miku2.mp4'),gifPlayback:true,
                     caption: helpmenu,
                     footer: `${BotName}`,
                     buttons: buttonshelpm,
                     headerType: 4
+
                 }
             Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
 break
+
 
 
 
@@ -6647,7 +6649,7 @@ case '':
                 {buttonId: `-help`, buttonText: {displayText: 'Help'}, type: 1}
                 ]
                 let buttonMessage = {
-                    file: Miku.sendMessage(m.chat,{video:fs.readFileSync('./system/tharkiedits.mp4'),gifPlayback:true,caption:needhelpmenu},{quoted:m}),
+                    video:fs.readFileSync('./system/tharkiedits.mp4'),gifPlayback:true,
                     caption: needhelpmenu,
                     footer: `${global.BotName}`,
                     buttons: butRun,
