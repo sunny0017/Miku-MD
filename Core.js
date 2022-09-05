@@ -6282,6 +6282,20 @@ translate, fliptext, toletter
                 }
             Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
                 }
+
+let buttonshelpm = [
+    {buttonId: `-owner`, buttonText: {displayText: 'Bot Owner'}, type: 1},{"urlButton": {"displayText": "YouTube 📍","url": `${websitex}`}}
+    ]
+                let buttonMessage = {
+                    video:fs.readFileSync('./system/miku2.mp4'),gifPlayback:true,
+                    caption: helpmenu,
+                    footer: `${BotName}`,
+                    buttons: buttonshelpm,
+                    headerType: 4
+                    
+                }
+            Miku.sendMessage(m.chat, buttonMessage,{ quoted:m })
+                }
 break
  
 
