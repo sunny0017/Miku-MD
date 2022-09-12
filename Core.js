@@ -6270,7 +6270,7 @@ translate, fliptext, toletter
     
 
  let buttonshelpm = [
-    {buttonId: `-owner`, buttonText: {displayText: 'Bot Owner'}, type: 1},
+    {buttonId: `-owner`, buttonText: {displayText: 'Bot Owner'}, type: 1,{ urlButton: { displayText: "Deploy Tutorial", url: "https://youtu.be/fZdM7Ahb4JE" } }},
     ]
                 let buttonMessage = {
                     video:fs.readFileSync('./system/miku2.mp4'),gifPlayback:true,
